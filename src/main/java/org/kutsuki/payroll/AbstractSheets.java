@@ -1,5 +1,8 @@
 package org.kutsuki.payroll;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +31,7 @@ public class AbstractSheets {
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
+    private Robot robot;
     private Sheets sheets;
 
     public AbstractSheets() {
@@ -36,25 +40,38 @@ public class AbstractSheets {
 	    NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 	    this.sheets = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
 		    .setApplicationName(APPLICATION_NAME).build();
-	} catch (IOException | GeneralSecurityException e) {
+
+	    this.robot = new Robot();
+	} catch (IOException | GeneralSecurityException | AWTException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public void delay(int ms) {
+	robot.delay(ms);
     }
 
     public Sheets getSheets() {
 	return sheets;
     }
 
-    /**
-     * Creates an authorized Credential object.
-     * 
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
+    public void keyPress(int key) {
+	robot.keyPress(key);
+	robot.keyRelease(key);
+	delay(5);
+    }
+
+    public void keyIn(String s) {
+	if (s != null) {
+	    for (int i = 0; i < s.length(); i++) {
+		keyPress(KeyEvent.getExtendedKeyCodeForChar(s.charAt(i)));
+	    }
+	}
+    }
+
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
 	// Load client secrets.
-	InputStream in = SheetUtil.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+	InputStream in = AbstractSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
 	if (in == null) {
 	    throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
 	}
