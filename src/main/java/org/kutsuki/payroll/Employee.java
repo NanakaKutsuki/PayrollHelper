@@ -72,16 +72,6 @@ public class Employee implements Comparable<Employee> {
 	return name.toString();
     }
 
-    // sets empty strings to null
-    private String setData(List<Object> list, int index) {
-	String data = String.valueOf(list.get(index));
-	if (StringUtils.isBlank(data)) {
-	    data = null;
-	}
-
-	return data;
-    }
-
     public String getFirstName() {
 	return firstName;
     }
@@ -116,5 +106,19 @@ public class Employee implements Comparable<Employee> {
 
     public boolean isSkip() {
 	return skip;
+    }
+
+    public void setBonus(String bonus) {
+	this.bonus = bonus;
+    }
+
+    // sets empty strings to null
+    private String setData(List<Object> list, int index) {
+	String data = String.valueOf(list.get(index));
+	if (StringUtils.isBlank(data)) {
+	    data = null;
+	}
+
+	return data;
     }
 }

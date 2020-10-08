@@ -5,16 +5,20 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class PayrollHelper extends AbstractSheets {
+    // run
+    @Override
     public void run() {
 	try {
 	    parseEmployees();
 	    keyIn();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    throw new IllegalStateException(e);
 	}
     }
 
-    private void keyIn() {
+    // keyIn
+    @Override
+    public void keyIn() {
 	// inital time to alt-tab
 	delay(6000);
 
@@ -45,8 +49,11 @@ public class PayrollHelper extends AbstractSheets {
 		keyPress(KeyEvent.VK_TAB);
 	    }
 	}
+
+	System.out.println("Done keying in!");
     }
 
+    // main
     public static void main(String[] args) {
 	PayrollHelper helper = new PayrollHelper();
 	helper.run();

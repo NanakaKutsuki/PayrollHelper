@@ -28,7 +28,7 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-public class AbstractSheets {
+public abstract class AbstractSheets {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
     private static final String APPLICATION_NAME = "PayrollHelper";
@@ -42,6 +42,10 @@ public class AbstractSheets {
     private Robot robot;
     private Sheets sheets;
 
+    public abstract void keyIn();
+
+    public abstract void run();
+
     public AbstractSheets() {
 	try {
 	    this.employeeMap = new HashMap<Integer, Employee>();
@@ -52,11 +56,11 @@ public class AbstractSheets {
 	    this.sheets = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
 		    .setApplicationName(APPLICATION_NAME).build();
 	} catch (IOException | GeneralSecurityException | AWTException e) {
-	    e.printStackTrace();
+	    throw new IllegalStateException(e);
 	}
 
 	// Interns
-	this.employeeMap.put(-2144727510, new Employee("J", "Diet", "10.00", ZERO));
+	// this.employeeMap.put(-2144727510, new Employee("J", "Diet", "10.00", ZERO));
     }
 
     public void delay(int ms) {
@@ -110,6 +114,8 @@ public class AbstractSheets {
 
 	    i++;
 	}
+
+	System.out.println("Parsed " + employeeMap.size() + " employees!");
     }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {

@@ -3,7 +3,7 @@ package org.kutsuki.payroll;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractBonusSheets extends AbstractSheets {
+public abstract class AbstractBonusSheets extends AbstractSheets {
     private Map<Integer, String> nameIdMap;
 
     public AbstractBonusSheets() {

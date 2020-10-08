@@ -31,49 +31,51 @@ public class BonusHelper extends AbstractBonusSheets {
     private String payDate;
     private Map<String, String> mondayMap;
 
-    public BonusHelper() {
-	this.mondayMap = new HashMap<String, String>();
-    }
-
+    // run
+    @Override
     public void run() {
-
 	try {
-	    // parsePayDate();
+	    parsePayDate();
 	    parseEmployees();
 	    updateBonusSheets();
-	    // writeStuff();
-	    // keyIn();
+	    updateMondaySheet();
+	    keyIn();
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    throw new IllegalStateException(e);
 	}
-
     }
 
+    // gets paydate and next available row
     private void parsePayDate() throws IOException {
 	ValueRange response = getSheets().spreadsheets().values().get(MONDAY_SHEET_ID, MONDAY_RANGE).execute();
 	List<List<Object>> rowList = response.getValues();
+	this.mondayMap = new HashMap<String, String>();
 	this.nextRow = rowList.size() + 1;
 	this.payDate = String.valueOf(rowList.get(2).get(1));
 
+	// check if date is too old
 	LocalDate date = LocalDate.parse(payDate, DTF);
 	if (date.isBefore(LocalDate.now())) {
 	    throw new IllegalArgumentException("Parsed pay date is too old! " + date);
 	}
+
+	System.out.println("Got Pay Date! " + date);
     }
 
+    // checks all bonus sheets and updates if necessary
     private void updateBonusSheets() throws IOException {
 	for (Entry<Integer, String> entry : getNameIdMap().entrySet()) {
-	    System.out.println(entry.getKey() + " Checking...");
+	    System.out.println(getEmployee(entry.getKey()).getName() + " Checking...");
 	    ValueRange response = getSheets().spreadsheets().values().get(entry.getValue(), BONUS_RANGE).execute();
 	    List<List<Object>> rowList = response.getValues();
-	    int nextBousRow = rowList.size() + 1;
+	    int nextBonusRow = rowList.size() + 1;
 
 	    BigDecimal owed = parseBigDecimal(rowList.get(2).get(2));
 	    if (owed.compareTo(BigDecimal.ZERO) != 0) {
 		BigDecimal bonus = parseBigDecimal(getEmployee(entry.getKey()).getBonus());
 
-		String checksum = StringUtils.replace(CHECKSUM, "BBB", "B" + nextBousRow);
-		checksum = StringUtils.replace(checksum, "CCC", "C" + nextBousRow);
+		String checksum = StringUtils.replace(CHECKSUM, "BBB", "B" + nextBonusRow);
+		checksum = StringUtils.replace(checksum, "CCC", "C" + nextBonusRow);
 
 		List<List<Object>> writeRowList = new ArrayList<List<Object>>();
 		List<Object> bonusList = new ArrayList<Object>();
@@ -92,26 +94,27 @@ public class BonusHelper extends AbstractBonusSheets {
 		    payoutList.add(payout.negate());
 		    payoutList.add(checksum);
 		    writeRowList.add(payoutList);
-		    mondayMap.put(getEmployee(entry.getKey()).getName(), payout.toString());
 		} else {
-		    mondayMap.put(getEmployee(entry.getKey()).getName(), getZero());
+		    payout = BigDecimal.ZERO;
 		}
 
-		System.out.println(mondayMap);
+		mondayMap.put(getEmployee(entry.getKey()).getName(), payout.toString());
+		getEmployee(entry.getKey()).setBonus(payout.toString());
 
 		ValueRange body = new ValueRange();
 		body.setValues(writeRowList);
 		getSheets().spreadsheets().values()
-			.update(entry.getValue(), LocalDate.now().getYear() + "!A" + nextBousRow, body)
+			.update(entry.getValue(), LocalDate.now().getYear() + "!A" + nextBonusRow, body)
 			.setValueInputOption(USER_ENTERED).execute();
 
-		System.out.println(entry.getKey() + " Updated!");
+		System.out.println(entry.getKey() + " updated to " + payout.toString());
 	    }
-	    delay(1000);
 
+	    delay(200);
 	}
     }
 
+    // parses String object into BigDecimal
     private BigDecimal parseBigDecimal(Object o) {
 	String value = String.valueOf(o);
 	value = StringUtils.remove(value, '$');
@@ -119,19 +122,20 @@ public class BonusHelper extends AbstractBonusSheets {
 	return new BigDecimal(value);
     }
 
-    private void writeStuff() throws IOException {
+    // updates monday sheet with change log
+    private void updateMondaySheet() throws IOException {
 	List<List<Object>> rowList = new ArrayList<List<Object>>();
-	for (int i = 0; i < 4; i++) {
+	for (Entry<String, String> entry : mondayMap.entrySet()) {
 	    List<Object> dataList = new ArrayList<Object>();
-	    dataList.add("Mr. Cool" + i);
-	    dataList.add(Integer.toString(i));
+	    dataList.add(entry.getKey());
+	    dataList.add(entry.getValue());
 	    rowList.add(dataList);
 	}
 
 	for (int i = 10 + rowList.size(); i < nextRow; i++) {
 	    List<Object> dataList = new ArrayList<Object>();
-	    dataList.add("");
-	    dataList.add("");
+	    dataList.add(StringUtils.EMPTY);
+	    dataList.add(StringUtils.EMPTY);
 	    rowList.add(dataList);
 	}
 
@@ -140,12 +144,13 @@ public class BonusHelper extends AbstractBonusSheets {
 
 	getSheets().spreadsheets().values().update(MONDAY_SHEET_ID, MONDAY_WRITE_RANGE, body)
 		.setValueInputOption(USER_ENTERED).execute();
+
+	System.out.println("Monday Special Sheet updated with " + mondayMap.size() + " changes!");
     }
 
-    private void keyIn() {
-	// inital time to alt-tab
-	delay(3000);
-
+    // keys in bonuses
+    @Override
+    public void keyIn() {
 	Collections.sort(getEmployeeList());
 	for (Employee employee : getEmployeeList()) {
 	    if (!employee.isSkip() && !employee.isPartner() && isBonus(employee)) {
@@ -163,12 +168,16 @@ public class BonusHelper extends AbstractBonusSheets {
 		keyPress(KeyEvent.VK_TAB);
 	    }
 	}
+
+	System.out.println("Done keying in!");
     }
 
+    // isBonus
     private boolean isBonus(Employee employee) {
 	return !employee.getBonus().equals(getZero());
     }
 
+    // main
     public static void main(String[] args) {
 	BonusHelper helper = new BonusHelper();
 	helper.run();
