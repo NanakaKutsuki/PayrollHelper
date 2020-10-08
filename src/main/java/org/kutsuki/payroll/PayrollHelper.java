@@ -18,7 +18,7 @@ public class PayrollHelper extends AbstractSheets {
     public void run() {
 	try {
 	    parseEmployees();
-	    keyIn();
+	    keyIn(5000);
 	} catch (IOException e) {
 	    throw new IllegalStateException(e);
 	}
@@ -28,9 +28,9 @@ public class PayrollHelper extends AbstractSheets {
      * Keys in bonuses
      */
     @Override
-    public void keyIn() {
+    public void keyIn(int ms) {
 	// inital time to alt-tab
-	delay(6000);
+	delay(ms);
 
 	Collections.sort(getEmployeeList());
 	for (Employee employee : getEmployeeList()) {

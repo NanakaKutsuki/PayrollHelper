@@ -46,7 +46,7 @@ public abstract class AbstractSheets {
     private Robot robot;
     private Sheets sheets;
 
-    public abstract void keyIn();
+    public abstract void keyIn(int ms);
 
     public abstract void run();
 
@@ -147,8 +147,8 @@ public abstract class AbstractSheets {
 	    Employee employee = new Employee(rowList.get(i));
 
 	    // TODO Remove special case
-	    if (employee.getName().hashCode() != -951030221) {
-		employeeMap.put(employee.getName().hashCode(), employee);
+	    if (employee.getFullName().hashCode() != 284331424) {
+		employeeMap.put(employee.getFullName().hashCode(), employee);
 	    }
 
 	    i++;

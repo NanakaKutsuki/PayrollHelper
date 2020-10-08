@@ -19,6 +19,7 @@ public class Employee implements Comparable<Employee> {
     private String generalAdmin;
     private String sickPay;
     private String bonus;
+    private String fullName;
     private boolean partner;
     private boolean skip;
 
@@ -34,6 +35,12 @@ public class Employee implements Comparable<Employee> {
 	this.lastName = lastName;
 	this.regularPay = regularPay;
 	this.bonus = ZERO;
+
+	StringBuilder sb = new StringBuilder();
+	sb.append(getFirstName());
+	sb.append(' ');
+	sb.append(getLastName());
+	this.fullName = sb.toString();
     }
 
     /**
@@ -52,6 +59,12 @@ public class Employee implements Comparable<Employee> {
 	    this.bonus = StringUtils.remove(setData(list, 6), '$');
 	    this.partner = generalAdmin != null;
 	    this.skip = regularPay == null;
+
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(getFirstName());
+	    sb.append(' ');
+	    sb.append(getLastName());
+	    this.fullName = sb.toString();
 	} else {
 	    throw new IllegalArgumentException("Bad Data: " + list);
 	}
@@ -94,12 +107,8 @@ public class Employee implements Comparable<Employee> {
      * 
      * @return first name and last name.
      */
-    public String getName() {
-	StringBuilder name = new StringBuilder();
-	name.append(getFirstName());
-	name.append(' ');
-	name.append(getLastName());
-	return name.toString();
+    public String getFullName() {
+	return fullName;
     }
 
     /**

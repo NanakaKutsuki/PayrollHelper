@@ -19,7 +19,7 @@ public class ShortBonusHelper extends AbstractBonusSheets {
 	    parseMondaySheet(false);
 	    parseEmployees();
 	    updateEmployeeList();
-	    keyIn();
+	    keyIn(5000);
 	} catch (IOException e) {
 	    throw new IllegalStateException(e);
 	}

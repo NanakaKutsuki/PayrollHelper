@@ -31,7 +31,10 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
      * Keys in bonuses.
      */
     @Override
-    public void keyIn() {
+    public void keyIn(int ms) {
+	// inital time to alt-tab
+	delay(ms);
+
 	Collections.sort(getEmployeeList());
 	for (Employee employee : getEmployeeList()) {
 	    if (!employee.isSkip() && !employee.isPartner() && employee.isBonus()) {
