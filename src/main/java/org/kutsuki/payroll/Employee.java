@@ -35,12 +35,7 @@ public class Employee implements Comparable<Employee> {
 	this.lastName = lastName;
 	this.regularPay = regularPay;
 	this.bonus = ZERO;
-
-	StringBuilder sb = new StringBuilder();
-	sb.append(getFirstName());
-	sb.append(' ');
-	sb.append(getLastName());
-	this.fullName = sb.toString();
+	setFullName();
     }
 
     /**
@@ -59,12 +54,7 @@ public class Employee implements Comparable<Employee> {
 	    this.bonus = StringUtils.remove(setData(list, 6), '$');
 	    this.partner = generalAdmin != null;
 	    this.skip = regularPay == null;
-
-	    StringBuilder sb = new StringBuilder();
-	    sb.append(getFirstName());
-	    sb.append(' ');
-	    sb.append(getLastName());
-	    this.fullName = sb.toString();
+	    setFullName();
 	} else {
 	    throw new IllegalArgumentException("Bad Data: " + list);
 	}
@@ -119,6 +109,17 @@ public class Employee implements Comparable<Employee> {
      */
     public boolean isBonus() {
 	return !getBonus().equals(ZERO);
+    }
+
+    /**
+     * Parses full name.
+     */
+    private void setFullName() {
+	StringBuilder sb = new StringBuilder();
+	sb.append(getFirstName());
+	sb.append(StringUtils.SPACE);
+	sb.append(getLastName());
+	this.fullName = sb.toString();
     }
 
     /**
