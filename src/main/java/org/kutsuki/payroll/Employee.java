@@ -2,6 +2,8 @@ package org.kutsuki.payroll;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Employee implements Comparable<Employee> {
     private String firstName;
     private String lastName;
@@ -9,12 +11,15 @@ public class Employee implements Comparable<Employee> {
     private String businessDevelopment;
     private String generalAdmin;
     private String sickPay;
+    private String bonus;
     private boolean partner;
     private boolean skip;
 
-    public Employee(String lastName, String regularPay) {
+    public Employee(String firstName, String lastName, String regularPay, String bonus) {
+	this.firstName = firstName;
 	this.lastName = lastName;
 	this.regularPay = regularPay;
+	this.bonus = bonus;
     }
 
     public Employee(List<Object> list) {
@@ -25,6 +30,7 @@ public class Employee implements Comparable<Employee> {
 	    this.businessDevelopment = setData(list, 3);
 	    this.generalAdmin = setData(list, 4);
 	    this.sickPay = setData(list, 5);
+	    this.bonus = StringUtils.remove(setData(list, 6), '$');
 	    this.partner = generalAdmin != null;
 	    this.skip = regularPay == null;
 	} else {
@@ -41,6 +47,7 @@ public class Employee implements Comparable<Employee> {
 	sb.append(getBusinessDevelopment()).append(',').append(' ');
 	sb.append(getGeneralAdmin()).append(',').append(' ');
 	sb.append(getSickPay()).append(',').append(' ');
+	sb.append(getBonus()).append(',').append(' ');
 	sb.append(isPartner()).append(',').append(' ');
 	sb.append(isSkip());
 	return sb.toString();
@@ -57,10 +64,18 @@ public class Employee implements Comparable<Employee> {
 	return result;
     }
 
+    public String getName() {
+	StringBuilder name = new StringBuilder();
+	name.append(getFirstName());
+	name.append(' ');
+	name.append(getLastName());
+	return name.toString();
+    }
+
     // sets empty strings to null
     private String setData(List<Object> list, int index) {
 	String data = String.valueOf(list.get(index));
-	if (data.isEmpty()) {
+	if (StringUtils.isBlank(data)) {
 	    data = null;
 	}
 
@@ -89,6 +104,10 @@ public class Employee implements Comparable<Employee> {
 
     public String getSickPay() {
 	return sickPay;
+    }
+
+    public String getBonus() {
+	return bonus;
     }
 
     public boolean isPartner() {
