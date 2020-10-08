@@ -28,6 +28,11 @@ import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+/**
+ * Common methods shared by all Helpers.
+ * 
+ * @author MatchaGreen
+ */
 public abstract class AbstractSheets {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
@@ -36,7 +41,6 @@ public abstract class AbstractSheets {
     private static final String MAIN_SHEET_ID = "1AGzsuTlo03umh2e7bGsRV0CTwo6hY9KNlViABVSjj3g";
     private static final String MAIN_RANGE = "Calculator!A2:G";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
-    private static final String ZERO = "0.00";
 
     private Map<Integer, Employee> employeeMap;
     private Robot robot;
@@ -46,6 +50,9 @@ public abstract class AbstractSheets {
 
     public abstract void run();
 
+    /**
+     * Default Constructor
+     */
     public AbstractSheets() {
 	try {
 	    this.employeeMap = new HashMap<Integer, Employee>();
@@ -60,37 +67,64 @@ public abstract class AbstractSheets {
 	}
 
 	// Interns
-	// this.employeeMap.put(-2144727510, new Employee("J", "Diet", "10.00", ZERO));
+	this.employeeMap.put(-2144727510, new Employee("J", "Diet", "10.00"));
     }
 
+    /**
+     * Delays execution
+     * 
+     * @param ms number of milliseconds of delay
+     */
     public void delay(int ms) {
 	robot.delay(ms);
     }
 
+    /**
+     * Get Employee.
+     * 
+     * @param key the Employee key
+     * @return the Employee
+     */
     public Employee getEmployee(int key) {
 	return employeeMap.get(key);
     }
 
+    /**
+     * Gets sorted list of Employees.
+     * 
+     * @return list of Employees.
+     */
     public List<Employee> getEmployeeList() {
 	List<Employee> employeeList = new ArrayList<Employee>(employeeMap.values());
 	Collections.sort(employeeList);
 	return employeeList;
     }
 
+    /**
+     * Get Google Sheets
+     * 
+     * @return Google Sheet API
+     */
     public Sheets getSheets() {
 	return sheets;
     }
 
-    public String getZero() {
-	return ZERO;
-    }
-
+    /**
+     * Press and releases key.
+     * 
+     * @param key key to be emulated.
+     */
     public void keyPress(int key) {
 	robot.keyPress(key);
 	robot.keyRelease(key);
 	delay(5);
     }
 
+    /**
+     * Types keys from String.
+     * 
+     * @param s String to be typed
+     */
     public void keyIn(String s) {
 	if (s != null) {
 	    for (int i = 0; i < s.length(); i++) {
@@ -99,6 +133,11 @@ public abstract class AbstractSheets {
 	}
     }
 
+    /**
+     * Parses Employees from Main sheet. One Employee is currently deactivated.
+     * 
+     * @throws IOException Errors from Google Sheets API.
+     */
     public void parseEmployees() throws IOException {
 	ValueRange response = getSheets().spreadsheets().values().get(MAIN_SHEET_ID, MAIN_RANGE).execute();
 	List<List<Object>> rowList = response.getValues();
@@ -118,6 +157,13 @@ public abstract class AbstractSheets {
 	System.out.println("Parsed " + employeeMap.size() + " employees!");
     }
 
+    /**
+     * Accesses Google Sheets
+     * 
+     * @param HTTP_TRANSPORT Google HTTP Transport
+     * @return the Google Credential
+     * @throws IOException Errors from Google Sheets API
+     */
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
 	// Load client secrets.
 	InputStream in = AbstractSheets.class.getResourceAsStream(CREDENTIALS_FILE_PATH);

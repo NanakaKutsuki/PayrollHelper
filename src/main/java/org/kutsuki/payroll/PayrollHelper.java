@@ -4,8 +4,16 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Automates keying into payroll system using values from the Main sheet and
+ * overridden by Monday sheet.
+ * 
+ * @author MatchaGreen
+ */
 public class PayrollHelper extends AbstractSheets {
-    // run
+    /**
+     * Top level runner
+     */
     @Override
     public void run() {
 	try {
@@ -16,7 +24,9 @@ public class PayrollHelper extends AbstractSheets {
 	}
     }
 
-    // keyIn
+    /**
+     * Keys in bonuses
+     */
     @Override
     public void keyIn() {
 	// inital time to alt-tab
@@ -53,7 +63,11 @@ public class PayrollHelper extends AbstractSheets {
 	System.out.println("Done keying in!");
     }
 
-    // main
+    /**
+     * Main
+     * 
+     * @param args Outside Arguments are ignored.
+     */
     public static void main(String[] args) {
 	PayrollHelper helper = new PayrollHelper();
 	helper.run();
