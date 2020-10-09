@@ -106,8 +106,8 @@ public class BonusHelper extends AbstractBonusSheets {
 		writeRowList.add(bonusList);
 
 		BigDecimal payout = bonus.add(owed);
-		if (payout.compareTo(BigDecimal.ZERO) == 1 && entry.getKey() != 1373398698
-			&& entry.getKey() != 1649047938) {
+		if (payout.compareTo(BigDecimal.ZERO) == 1 && entry.getKey() != 795816972
+			&& entry.getKey() != 148086847) {
 		    List<Object> payoutList = new ArrayList<Object>();
 		    payoutList.add(getPayDate());
 		    payoutList.add(PAYOUT);
