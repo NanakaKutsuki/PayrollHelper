@@ -1,8 +1,9 @@
 package org.kutsuki.payroll;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.Collections;
+
+import org.kutsuki.payroll.model.Employee;
 
 /**
  * Automates keying into payroll system using values from the Main sheet and
@@ -16,12 +17,8 @@ public class PayrollHelper extends AbstractSheets {
      */
     @Override
     public void run() {
-	try {
-	    parseEmployees();
-	    keyIn(5000);
-	} catch (IOException e) {
-	    throw new IllegalStateException(e);
-	}
+	parseEmployees();
+	keyIn(5000);
     }
 
     /**

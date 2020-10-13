@@ -1,6 +1,5 @@
 package org.kutsuki.payroll;
 
-import java.io.IOException;
 import java.util.Map.Entry;
 
 /**
@@ -15,14 +14,10 @@ public class ShortBonusHelper extends AbstractBonusSheets {
      */
     @Override
     public void run() {
-	try {
-	    parseMondaySheet(false);
-	    parseEmployees();
-	    updateEmployeeList();
-	    keyIn(5000);
-	} catch (IOException e) {
-	    throw new IllegalStateException(e);
-	}
+	parseMondaySheet(false);
+	parseEmployees();
+	updateEmployeeList();
+	keyIn(5000);
     }
 
     /**

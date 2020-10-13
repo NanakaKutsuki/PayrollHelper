@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.kutsuki.payroll.model.Employee;
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -41,6 +44,7 @@ public abstract class AbstractSheets {
     private static final String MAIN_SHEET_ID = "1AGzsuTlo03umh2e7bGsRV0CTwo6hY9KNlViABVSjj3g";
     private static final String MAIN_RANGE = "Calculator!A2:G";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private static final String USER_ENTERED = "USER_ENTERED";
 
     private Map<Integer, Employee> employeeMap;
     private Robot robot;
@@ -80,6 +84,19 @@ public abstract class AbstractSheets {
     }
 
     /**
+     * Parses String object, removes dollar sign and removes comma.
+     * 
+     * @param o text in object
+     * @return String converted Object.
+     */
+    public String escapeString(Object o) {
+	String value = String.valueOf(o);
+	value = StringUtils.remove(value, '$');
+	value = StringUtils.remove(value, ',');
+	return value;
+    }
+
+    /**
      * Get Employee.
      * 
      * @param key the Employee key
@@ -101,12 +118,12 @@ public abstract class AbstractSheets {
     }
 
     /**
-     * Get Google Sheets
+     * Get Main sheet ID
      * 
-     * @return Google Sheet API
+     * @return The Main sheet ID.
      */
-    public Sheets getSheets() {
-	return sheets;
+    public String getMainSheetId() {
+	return MAIN_SHEET_ID;
     }
 
     /**
@@ -135,12 +152,9 @@ public abstract class AbstractSheets {
 
     /**
      * Parses Employees from Main sheet. One Employee is currently deactivated.
-     * 
-     * @throws IOException Errors from Google Sheets API.
      */
-    public void parseEmployees() throws IOException {
-	ValueRange response = getSheets().spreadsheets().values().get(MAIN_SHEET_ID, MAIN_RANGE).execute();
-	List<List<Object>> rowList = response.getValues();
+    public void parseEmployees() {
+	List<List<Object>> rowList = readSheet(getMainSheetId(), MAIN_RANGE);
 
 	int i = 0;
 	while (i < rowList.size() && rowList.get(i).size() > 0) {
@@ -155,6 +169,52 @@ public abstract class AbstractSheets {
 	}
 
 	System.out.println("Parsed " + employeeMap.size() + " employees!");
+    }
+
+    public List<List<Object>> readSheet(String id, String range) {
+	int retries = 0;
+	List<List<Object>> result = null;
+
+	while (result == null) {
+	    try {
+		ValueRange response = sheets.spreadsheets().values().get(id, range).execute();
+		result = response.getValues();
+		delay(1000);
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
+
+	return result;
+    }
+
+    public void writeSheet(String id, String range, ValueRange body) {
+	boolean completed = false;
+	int retries = 0;
+
+	while (!completed) {
+	    try {
+		sheets.spreadsheets().values().update(id, range, body).setValueInputOption(USER_ENTERED).execute();
+		delay(1000);
+		completed = true;
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
     }
 
     /**
