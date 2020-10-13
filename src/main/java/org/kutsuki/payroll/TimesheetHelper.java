@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +18,15 @@ public class TimesheetHelper extends AbstractBonusSheets {
     private static final String USER_REPORT = "UserReport_";
     private static final String ZIP = ".zip";
 
+    private Map<String, TimesheetModel> timesheetMap;
+
     /**
      * Top level runner
      */
     @Override
     public void run() {
 	try {
+	    parseMondaySheet(false);
 	    parseCsv();
 	} catch (IOException e) {
 	    throw new IllegalStateException("Unable to parse CSV file.", e);
@@ -33,6 +40,7 @@ public class TimesheetHelper extends AbstractBonusSheets {
 	boolean found = false;
 	int i = 0;
 	File[] files = DESKTOP.listFiles();
+	this.timesheetMap = new HashMap<String, TimesheetModel>();
 
 	// go through desktop files
 	while (i < files.length && !found) {
@@ -47,15 +55,19 @@ public class TimesheetHelper extends AbstractBonusSheets {
 		String line = br.readLine();
 		while ((line = br.readLine()) != null) {
 		    String[] splitLine = StringUtils.split(line, ',');
-		    String date = splitLine[1];
+		    LocalDate date = LocalDate.parse(splitLine[1], getDateTimeFormatter());
 		    String worker = splitLine[2];
-		    String customer = splitLine[3];
-		    String activity = splitLine[4];
-		    String quantity = splitLine[9];
+		    String service = splitLine[3] + splitLine[4];
+		    BigDecimal hours = new BigDecimal(splitLine[9]);
 		    String status = splitLine[10];
 
-		    TimesheetModel model = new TimesheetModel(worker);
-		    System.out.println(model.getFullName());
+		    TimesheetModel model = timesheetMap.get(worker);
+		    if (model == null) {
+			model = new TimesheetModel(worker);
+			timesheetMap.put(worker, model);
+		    }
+		    model.addDateStatus(date, status);
+		    model.addServiceHours(service, hours);
 		}
 
 		found = true;

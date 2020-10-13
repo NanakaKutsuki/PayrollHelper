@@ -21,6 +21,7 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
     private static final String MONDAY_RANGE = "Payroll!A:B";
 
     private int nextRow;
+    private LocalDate endDate;
     private Map<String, String> mondayMap;
     private String payDate;
 
@@ -51,6 +52,24 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
 	}
 
 	System.out.println("Done keying in!");
+    }
+
+    /**
+     * Get M/d/y formatter.
+     * 
+     * @return Date time formatter
+     */
+    public DateTimeFormatter getDateTimeFormatter() {
+	return DTF;
+    }
+
+    /**
+     * Get end date from Monday Sheet.
+     * 
+     * @return end date.
+     */
+    public LocalDate getEndDate() {
+	return endDate;
     }
 
     /**
@@ -96,6 +115,7 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
 	List<List<Object>> rowList = readSheet(getMondaySheetId(), MONDAY_RANGE);
 	this.mondayMap = new HashMap<String, String>();
 	this.nextRow = rowList.size() + 1;
+	this.endDate = LocalDate.parse(String.valueOf(rowList.get(1).get(1)), DTF);
 	this.payDate = String.valueOf(rowList.get(2).get(1));
 
 	// check if date is too old

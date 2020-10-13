@@ -41,6 +41,8 @@ public class VanguardHelper extends AbstractSheets {
 	keyIn(totalCompensation);
 	keyPress(KeyEvent.VK_TAB);
 	keyIn(totalHours);
+
+	System.out.println("Done keying in!");
     }
 
     /**
@@ -61,6 +63,8 @@ public class VanguardHelper extends AbstractSheets {
 	roth = escapeString(rowList.get(i + 2).get(2));
 	totalCompensation = escapeString(rowList.get(i + 4).get(2));
 	totalHours = escapeString(rowList.get(i + 5).get(2));
+
+	System.out.println("Parsed data for Vanguard!");
     }
 
     /**
