@@ -55,15 +55,6 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
     }
 
     /**
-     * Get M/d/y formatter.
-     * 
-     * @return Date time formatter
-     */
-    public DateTimeFormatter getDateTimeFormatter() {
-	return DTF;
-    }
-
-    /**
      * Get end date from Monday Sheet.
      * 
      * @return end date.

@@ -9,9 +9,12 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author MatchaGreen
  */
-public class Employee extends AbstractModel {
+public class Employee implements Comparable<Employee> {
     private static final String ZERO = "0.00";
 
+    private String firstName;
+    private String lastName;
+    private String fullName;
     private String regularPay;
     private String businessDevelopment;
     private String generalAdmin;
@@ -26,9 +29,11 @@ public class Employee extends AbstractModel {
      * @param regularPay regular hours
      */
     public Employee(String firstName, String lastName, String regularPay) {
-	super(firstName, lastName);
+	this.firstName = firstName;
+	this.lastName = lastName;
 	this.regularPay = regularPay;
 	this.bonus = ZERO;
+	setFullName();
     }
 
     /**
@@ -37,12 +42,32 @@ public class Employee extends AbstractModel {
      * @param data from a row.
      */
     public Employee(List<Object> list) {
-	super(list, 7);
-	this.regularPay = setData(list, 2);
-	this.businessDevelopment = setData(list, 3);
-	this.generalAdmin = setData(list, 4);
-	this.sickPay = setData(list, 5);
-	this.bonus = StringUtils.remove(setData(list, 6), '$');
+	if (list.size() == 7) {
+	    this.firstName = setData(list, 0);
+	    this.lastName = setData(list, 1);
+	    this.regularPay = setData(list, 2);
+	    this.businessDevelopment = setData(list, 3);
+	    this.generalAdmin = setData(list, 4);
+	    this.sickPay = setData(list, 5);
+	    this.bonus = StringUtils.remove(setData(list, 6), '$');
+	    setFullName();
+	} else {
+	    throw new IllegalArgumentException("Bad Data: " + list);
+	}
+    }
+
+    /**
+     * Comparing alphabetically by last name first then first name.
+     */
+    @Override
+    public int compareTo(Employee rhs) {
+	int result = getLastName().compareTo(rhs.getLastName());
+
+	if (result == 0) {
+	    result = getFirstName().compareTo(rhs.getFirstName());
+	}
+
+	return result;
     }
 
     /**
@@ -59,6 +84,22 @@ public class Employee extends AbstractModel {
 	sb.append(getSickPay()).append(',').append(' ');
 	sb.append(getBonus());
 	return sb.toString();
+    }
+
+    /**
+     * Parses row data and sets to null if it's blank.
+     * 
+     * @param list  row data.
+     * @param index index of row data.
+     * @return parsed data in String format.
+     */
+    public String setData(List<Object> list, int index) {
+	String data = String.valueOf(list.get(index));
+	if (StringUtils.isBlank(data)) {
+	    data = null;
+	}
+
+	return data;
     }
 
     /**
@@ -89,6 +130,18 @@ public class Employee extends AbstractModel {
 	return getRegularPay() == null || getRegularPay().equals(ZERO);
     }
 
+    public String getFirstName() {
+	return firstName;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public String getFullName() {
+	return fullName;
+    }
+
     public String getRegularPay() {
 	return regularPay;
     }
@@ -111,5 +164,16 @@ public class Employee extends AbstractModel {
 
     public void setBonus(String bonus) {
 	this.bonus = bonus;
+    }
+
+    /**
+     * Creates Full Name.
+     */
+    private void setFullName() {
+	StringBuilder sb = new StringBuilder();
+	sb.append(getFirstName());
+	sb.append(StringUtils.SPACE);
+	sb.append(getLastName());
+	this.fullName = sb.toString();
     }
 }

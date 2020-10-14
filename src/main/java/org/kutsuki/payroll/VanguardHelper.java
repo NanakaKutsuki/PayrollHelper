@@ -3,6 +3,11 @@ package org.kutsuki.payroll;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+/**
+ * Parses retirement data and keys into Vanguard.
+ * 
+ * @author MatchaGreen
+ */
 public class VanguardHelper extends AbstractSheets {
     private static final String VANGUARD_RANGE = "Calculator!A2:C";
 
@@ -46,7 +51,7 @@ public class VanguardHelper extends AbstractSheets {
     }
 
     /**
-     * Parses 401k data from the Main sheet.
+     * Parses retirement data from the Main sheet.
      */
     private void parseVanguard() {
 	List<List<Object>> rowList = readSheet(getMainSheetId(), VANGUARD_RANGE);
