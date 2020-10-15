@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kutsuki.payroll.model.Employee;
+import org.kutsuki.payroll.model.EmployeeModel;
 
 /**
  * Common methods shared by Bonus Helpers.
@@ -34,7 +34,7 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
 	delay(ms);
 
 	Collections.sort(getEmployeeList());
-	for (Employee employee : getEmployeeList()) {
+	for (EmployeeModel employee : getEmployeeList()) {
 	    if (!employee.isPartner() && employee.isBonus()) {
 		keyPress(KeyEvent.VK_TAB);
 		keyPress(KeyEvent.VK_TAB);

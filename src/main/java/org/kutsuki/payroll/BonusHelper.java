@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.Employee;
+import org.kutsuki.payroll.model.EmployeeModel;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
@@ -83,7 +83,7 @@ public class BonusHelper extends AbstractBonusSheets {
      */
     private void updateBonusSheets() {
 	for (Entry<Integer, String> entry : nameIdMap.entrySet()) {
-	    Employee employee = getEmployee(entry.getKey());
+	    EmployeeModel employee = getEmployee(entry.getKey());
 	    System.out.println("Working on " + employee.getFullName() + "...");
 
 	    List<List<Object>> rowList = readSheet(entry.getValue(), BONUS_RANGE);

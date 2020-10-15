@@ -3,7 +3,7 @@ package org.kutsuki.payroll;
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 
-import org.kutsuki.payroll.model.Employee;
+import org.kutsuki.payroll.model.EmployeeModel;
 
 /**
  * Automates keying into payroll system using values from the Main sheet and
@@ -30,7 +30,7 @@ public class PayrollHelper extends AbstractSheets {
 	delay(ms);
 
 	Collections.sort(getEmployeeList());
-	for (Employee employee : getEmployeeList()) {
+	for (EmployeeModel employee : getEmployeeList()) {
 	    if (!employee.isSkip()) {
 		keyPress(KeyEvent.VK_TAB);
 		keyPress(KeyEvent.VK_TAB);

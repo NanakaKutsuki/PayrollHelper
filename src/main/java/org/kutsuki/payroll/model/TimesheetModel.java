@@ -4,32 +4,23 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Timesheet {
+public class TimesheetModel extends AbstractTimesheetModel {
     private static final BigDecimal FORTY = new BigDecimal(40);
-    private static final String BUSINESS_DEVELOPMENT = "Business Development";
-    private static final String COVID_SICK_LEAVE = "COVID-19 Sick Leave";
-    private static final String GENERAL_ADMIN = "General Admin";
-    private static final String SECURITY = "Security";
-    private static final String SENTINEL = "Sentinel";
-    private static final String SICK_LEAVE = "Sick Leave";
 
-    private boolean valid;
     private BigDecimal regularPay;
     private BigDecimal businessDevelopment;
     private BigDecimal sickPay;
-    private String fullName;
 
     /**
      * Constructor
      * 
      * @param fullName Employee's full name.
      */
-    public Timesheet(String fullName) {
-	this.fullName = fullName;
+    public TimesheetModel(String fullName) {
+	super(fullName);
 	this.regularPay = BigDecimal.ZERO;
 	this.businessDevelopment = BigDecimal.ZERO;
 	this.sickPay = BigDecimal.ZERO;
-	this.valid = false;
     }
 
     /**
@@ -54,45 +45,39 @@ public class Timesheet {
      * @param service  the name of the service.
      * @param hours    the number of hours.
      */
+    @Override
     public void addHours(String customer, String service, BigDecimal hours) {
-	if (StringUtils.equals(service, BUSINESS_DEVELOPMENT)) {
-	    customerCheck(customer, service);
+	if (StringUtils.equals(service, getBusinessDevelopment())) {
+	    errorIfNotSentinel(customer, service);
 	    businessDevelopment = businessDevelopment.add(hours);
-	} else if (StringUtils.equals(service, GENERAL_ADMIN)) {
-	    customerCheck(customer, service);
+	} else if (StringUtils.equals(service, getGeneralAdmin())) {
+	    errorIfNotSentinel(customer, service);
 	    // generalAdmin = generalAdmin.add(hours);
-	} else if (StringUtils.equals(service, SICK_LEAVE)) {
-	    customerCheck(customer, service);
+	} else if (StringUtils.equals(service, getSickLeave())) {
+	    errorIfNotSentinel(customer, service);
 	    sickPay = sickPay.add(hours);
-	} else if (StringUtils.equals(service, SECURITY)) {
-	    customerCheck(customer, service);
+	} else if (StringUtils.equals(service, getSecurity())) {
+	    errorIfNotSentinel(customer, service);
 	    regularPay = regularPay.add(hours);
 	    validate();
-	} else if (StringUtils.equals(service, COVID_SICK_LEAVE)) {
-	    customerCheck(customer, service);
+	} else if (StringUtils.equals(service, getCovidSickLeave())) {
+	    errorIfNotSentinel(customer, service);
 	    System.out.println(getFullName() + " - Covid-19 Sick Leave Found!");
 	} else {
-	    if (StringUtils.startsWith(customer, SENTINEL)) {
-		System.out.println(getFullName() + " - Wrong Customer: " + customer + StringUtils.SPACE + service);
-	    }
-
+	    errorIfSentinel(customer, service);
 	    regularPay = regularPay.add(hours);
 	}
-    }
-
-    public String getFullName() {
-	return fullName;
     }
 
     public BigDecimal getRegularPay() {
 	return regularPay;
     }
 
-    public BigDecimal getBusinessDevelopment() {
+    public BigDecimal getBD() {
 	return businessDevelopment;
     }
 
-    public BigDecimal getGeneralAdmin() {
+    public BigDecimal getGA() {
 	BigDecimal generalAdmin = BigDecimal.ZERO;
 
 	if (getFullName().hashCode() == -2123502949 || getFullName().hashCode() == -2045858276
@@ -105,19 +90,5 @@ public class Timesheet {
 
     public BigDecimal getSickPay() {
 	return sickPay;
-    }
-
-    public boolean isValid() {
-	return valid;
-    }
-
-    public void validate() {
-	this.valid = true;
-    }
-
-    private void customerCheck(String customer, String service) {
-	if (!StringUtils.startsWith(customer, SENTINEL)) {
-	    System.out.println(getFullName() + " - Wrong Customer: " + customer + StringUtils.SPACE + service);
-	}
     }
 }

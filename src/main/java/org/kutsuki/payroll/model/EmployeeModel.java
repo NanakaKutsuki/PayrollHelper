@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * @author MatchaGreen
  */
-public class Employee implements Comparable<Employee> {
+public class EmployeeModel implements Comparable<EmployeeModel> {
     private static final String ZERO = "0.00";
 
     private String firstName;
@@ -28,7 +28,7 @@ public class Employee implements Comparable<Employee> {
      * @param lastName   last name
      * @param regularPay regular hours
      */
-    public Employee(String firstName, String lastName, String regularPay) {
+    public EmployeeModel(String firstName, String lastName, String regularPay) {
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.regularPay = regularPay;
@@ -41,7 +41,7 @@ public class Employee implements Comparable<Employee> {
      * 
      * @param data from a row.
      */
-    public Employee(List<Object> list) {
+    public EmployeeModel(List<Object> list) {
 	if (list.size() == 7) {
 	    this.firstName = setData(list, 0);
 	    this.lastName = setData(list, 1);
@@ -60,7 +60,7 @@ public class Employee implements Comparable<Employee> {
      * Comparing alphabetically by last name first then first name.
      */
     @Override
-    public int compareTo(Employee rhs) {
+    public int compareTo(EmployeeModel rhs) {
 	int result = getLastName().compareTo(rhs.getLastName());
 
 	if (result == 0) {

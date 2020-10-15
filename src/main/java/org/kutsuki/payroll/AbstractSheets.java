@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.Employee;
+import org.kutsuki.payroll.model.EmployeeModel;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -46,7 +46,7 @@ public abstract class AbstractSheets {
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
     private static final String USER_ENTERED = "USER_ENTERED";
 
-    private Map<Integer, Employee> employeeMap;
+    private Map<Integer, EmployeeModel> employeeMap;
     private Robot robot;
     private Sheets sheets;
 
@@ -59,7 +59,7 @@ public abstract class AbstractSheets {
      */
     public AbstractSheets() {
 	try {
-	    this.employeeMap = new HashMap<Integer, Employee>();
+	    this.employeeMap = new HashMap<Integer, EmployeeModel>();
 	    this.robot = new Robot();
 
 	    // Build a new authorized API client service.
@@ -71,7 +71,7 @@ public abstract class AbstractSheets {
 	}
 
 	// Interns
-	this.employeeMap.put(-2144727510, new Employee("J", "Diet", "10.00"));
+	this.employeeMap.put(-2144727510, new EmployeeModel("J", "Diet", "10.00"));
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class AbstractSheets {
      * @param key the Employee key
      * @return the Employee
      */
-    public Employee getEmployee(int key) {
+    public EmployeeModel getEmployee(int key) {
 	return employeeMap.get(key);
     }
 
@@ -111,8 +111,8 @@ public abstract class AbstractSheets {
      * 
      * @return list of Employees.
      */
-    public List<Employee> getEmployeeList() {
-	List<Employee> employeeList = new ArrayList<Employee>(employeeMap.values());
+    public List<EmployeeModel> getEmployeeList() {
+	List<EmployeeModel> employeeList = new ArrayList<EmployeeModel>(employeeMap.values());
 	Collections.sort(employeeList);
 	return employeeList;
     }
@@ -158,7 +158,7 @@ public abstract class AbstractSheets {
 
 	int i = 0;
 	while (i < rowList.size() && rowList.get(i).size() > 0) {
-	    Employee employee = new Employee(rowList.get(i));
+	    EmployeeModel employee = new EmployeeModel(rowList.get(i));
 
 	    // TODO Remove special case
 	    if (employee.getFullName().hashCode() != 284331424) {
