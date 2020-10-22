@@ -1,7 +1,9 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.payroll;
 
 import java.awt.event.KeyEvent;
 import java.util.List;
+
+import org.kutsuki.sheets.AbstractSheets;
 
 /**
  * Parses retirement data and keys into Vanguard.

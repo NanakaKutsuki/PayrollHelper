@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets;
 
 import java.awt.event.KeyEvent;
 import java.time.LocalDate;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kutsuki.payroll.model.EmployeeModel;
+import org.kutsuki.sheets.model.EmployeeModel;
 
 /**
  * Common methods shared by Bonus Helpers.

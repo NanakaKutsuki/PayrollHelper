@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.invoice;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.kutsuki.payroll.model.LeaderboardModel;
+import org.kutsuki.sheets.AbstractSheets;
+import org.kutsuki.sheets.model.LeaderboardModel;
 
 public class LeaderboardHelper extends AbstractSheets {
     private static final String LEADERBOARDS = " Leaderboards";

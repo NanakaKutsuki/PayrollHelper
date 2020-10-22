@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.EmployeeModel;
+import org.kutsuki.sheets.model.EmployeeModel;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;

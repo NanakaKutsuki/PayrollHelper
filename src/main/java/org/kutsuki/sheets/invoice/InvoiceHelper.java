@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.invoice;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.AbstractTimesheetModel;
-import org.kutsuki.payroll.model.InvoiceModel;
+import org.kutsuki.sheets.AbstractTimesheet;
+import org.kutsuki.sheets.model.AbstractTimesheetModel;
+import org.kutsuki.sheets.model.InvoiceModel;
 
 import com.google.api.services.sheets.v4.model.RowData;
 import com.google.api.services.sheets.v4.model.ValueRange;

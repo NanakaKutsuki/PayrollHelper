@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.AbstractTimesheetModel;
-import org.kutsuki.payroll.model.InvoiceModel;
+import org.kutsuki.sheets.model.AbstractTimesheetModel;
+import org.kutsuki.sheets.model.InvoiceModel;
 
 public abstract class AbstractTimesheet extends AbstractBonusSheets {
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("d MMM yyyy");

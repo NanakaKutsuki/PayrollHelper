@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.payroll;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.payroll.model.EmployeeModel;
+import org.kutsuki.sheets.AbstractBonusSheets;
+import org.kutsuki.sheets.model.EmployeeModel;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 

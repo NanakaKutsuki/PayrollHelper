@@ -1,4 +1,4 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.invoice;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,9 +1,10 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.payroll;
 
 import java.awt.event.KeyEvent;
 import java.util.Collections;
 
-import org.kutsuki.payroll.model.EmployeeModel;
+import org.kutsuki.sheets.AbstractSheets;
+import org.kutsuki.sheets.model.EmployeeModel;
 
 /**
  * Automates keying into payroll system using values from the Main sheet and

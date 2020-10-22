@@ -1,4 +1,4 @@
-package org.kutsuki.payroll.model;
+package org.kutsuki.sheets.model;
 
 import java.util.List;
 

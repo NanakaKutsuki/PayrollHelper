@@ -1,6 +1,8 @@
-package org.kutsuki.payroll;
+package org.kutsuki.sheets.payroll;
 
 import java.util.Map.Entry;
+
+import org.kutsuki.sheets.AbstractBonusSheets;
 
 /**
  * Automates keying into payroll system using values from the Main sheet and
