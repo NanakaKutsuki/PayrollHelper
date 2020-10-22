@@ -10,7 +10,7 @@ import org.kutsuki.sheets.AbstractBonusSheets;
  * 
  * @author MatchaGreen
  */
-public class ShortBonusHelper extends AbstractBonusSheets {
+public class CShortBonusHelper extends AbstractBonusSheets {
     /**
      * Top level runner
      */
@@ -37,7 +37,7 @@ public class ShortBonusHelper extends AbstractBonusSheets {
      * @param args Outside Arguments are ignored.
      */
     public static void main(String[] args) {
-	ShortBonusHelper helper = new ShortBonusHelper();
+	CShortBonusHelper helper = new CShortBonusHelper();
 	helper.run();
     }
 }

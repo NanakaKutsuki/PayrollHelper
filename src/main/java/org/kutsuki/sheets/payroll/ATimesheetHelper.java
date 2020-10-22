@@ -18,7 +18,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
  * 
  * @author MatchaGreen
  */
-public class TimesheetHelper extends AbstractTimesheet {
+public class ATimesheetHelper extends AbstractTimesheet {
     private static final String NAME_RANGE = "Calculator!A2:B";
     private static final String WRITE_RANGE = "Calculator!C2:F";
 
@@ -131,7 +131,7 @@ public class TimesheetHelper extends AbstractTimesheet {
      * @param args Outside Arguments are ignored.
      */
     public static void main(String[] args) {
-	TimesheetHelper helper = new TimesheetHelper();
+	ATimesheetHelper helper = new ATimesheetHelper();
 	helper.run();
     }
 }

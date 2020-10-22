@@ -10,7 +10,7 @@ import org.kutsuki.sheets.AbstractSheets;
  * 
  * @author MatchaGreen
  */
-public class VanguardHelper extends AbstractSheets {
+public class DVanguardHelper extends AbstractSheets {
     private static final String VANGUARD_RANGE = "Calculator!A2:C";
 
     private String regular;
@@ -80,7 +80,7 @@ public class VanguardHelper extends AbstractSheets {
      * @param args Outside Arguments are ignored.
      */
     public static void main(String[] args) {
-	VanguardHelper helper = new VanguardHelper();
+	DVanguardHelper helper = new DVanguardHelper();
 	helper.run();
     }
 }

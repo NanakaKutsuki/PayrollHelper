@@ -20,7 +20,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
  * 
  * @author MatchaGreen
  */
-public class BonusHelper extends AbstractBonusSheets {
+public class CBonusHelper extends AbstractBonusSheets {
     private static final String BBB = "BBB";
     private static final String BONUS = "Bonus";
     private static final String BONUS_RANGE = LocalDate.now().getYear() + "!A:D";
@@ -34,7 +34,7 @@ public class BonusHelper extends AbstractBonusSheets {
     /**
      * BonusHelper constructor
      */
-    public BonusHelper() {
+    public CBonusHelper() {
 	this.nameIdMap = new HashMap<Integer, String>();
 	this.nameIdMap.put(-1270501051, "1CsJf_myUrh8TlkE7f2llvGLXJjGhlcmL1w3OFYh-ZAU");
 	this.nameIdMap.put(798342352, "1vCKdgucrG8KEgG-ahFzvhQDLjhtZ_jpPCW-_EeG2trU");
@@ -172,7 +172,7 @@ public class BonusHelper extends AbstractBonusSheets {
      * @param args Outside Arguments are ignored.
      */
     public static void main(String[] args) {
-	BonusHelper helper = new BonusHelper();
+	CBonusHelper helper = new CBonusHelper();
 	helper.run();
     }
 }

@@ -12,7 +12,7 @@ import org.kutsuki.sheets.model.EmployeeModel;
  * 
  * @author MatchaGreen
  */
-public class PayrollHelper extends AbstractSheets {
+public class BPayrollHelper extends AbstractSheets {
     /**
      * Top level runner
      */
@@ -67,7 +67,7 @@ public class PayrollHelper extends AbstractSheets {
      * @param args Outside Arguments are ignored.
      */
     public static void main(String[] args) {
-	PayrollHelper helper = new PayrollHelper();
+	BPayrollHelper helper = new BPayrollHelper();
 	helper.run();
     }
 }
