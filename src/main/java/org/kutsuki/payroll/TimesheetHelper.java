@@ -95,9 +95,9 @@ public class TimesheetHelper extends AbstractTimesheet {
      * Parses full name from Main sheet
      * 
      * @param list List of names.
-     * @return Employee full name.
+     * @return Employee full name's hash code.
      */
-    private String createKey(List<Object> list) {
+    private int createKey(List<Object> list) {
 	StringBuilder sb = new StringBuilder();
 	if (list.size() == 2) {
 	    sb.append(list.get(0));
@@ -105,7 +105,7 @@ public class TimesheetHelper extends AbstractTimesheet {
 	    sb.append(list.get(1));
 	}
 
-	return sb.toString();
+	return sb.toString().hashCode();
     }
 
     /**

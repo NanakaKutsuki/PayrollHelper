@@ -22,7 +22,7 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
     private static final String USER_REPORT = "UserReport_";
     private static final String ZIP = ".zip";
 
-    private Map<String, AbstractTimesheetModel> timesheetMap;
+    private Map<Integer, AbstractTimesheetModel> timesheetMap;
 
     public abstract AbstractTimesheetModel newTimesheet(String fullName);
 
@@ -39,7 +39,7 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 	boolean found = false;
 	int i = 0;
 	File[] files = DESKTOP.listFiles();
-	this.timesheetMap = new HashMap<String, AbstractTimesheetModel>();
+	this.timesheetMap = new HashMap<Integer, AbstractTimesheetModel>();
 
 	// go through desktop files
 	while (i < files.length && !found) {
@@ -61,10 +61,10 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 		    BigDecimal hours = new BigDecimal(splitLine[9]);
 		    String status = splitLine[10];
 
-		    AbstractTimesheetModel invoice = timesheetMap.get(fullName);
+		    AbstractTimesheetModel invoice = timesheetMap.get(fullName.hashCode());
 		    if (invoice == null) {
 			invoice = new InvoiceModel(fullName);
-			timesheetMap.put(fullName, invoice);
+			timesheetMap.put(fullName.hashCode(), invoice);
 		    }
 
 		    if (date.isAfter(getValidationPeriod()) && !status.equals(PENDING)) {
@@ -77,6 +77,11 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 		    invoice.addHours(customer, service, hours);
 		}
 
+		// TODO Remove special case
+		InvoiceModel model = new InvoiceModel(StringUtils.EMPTY);
+		model.validate();
+		timesheetMap.put(284331424, model);
+
 		found = true;
 
 		br.close();
@@ -88,7 +93,7 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 	}
     }
 
-    public Map<String, AbstractTimesheetModel> getTimesheetMap() {
+    public Map<Integer, AbstractTimesheetModel> getTimesheetMap() {
 	return timesheetMap;
     }
 

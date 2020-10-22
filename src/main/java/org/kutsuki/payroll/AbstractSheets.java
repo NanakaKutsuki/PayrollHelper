@@ -29,6 +29,9 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.GridData;
+import com.google.api.services.sheets.v4.model.RowData;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 /**
@@ -171,6 +174,13 @@ public abstract class AbstractSheets {
 	System.out.println("Parsed " + employeeMap.size() + " employees!");
     }
 
+    /**
+     * Read Google sheet.
+     * 
+     * @param id    ID of Google Sheet.
+     * @param range Range of Google Sheet.
+     * @return cell data.
+     */
     public List<List<Object>> readSheet(String id, String range) {
 	int retries = 0;
 	List<List<Object>> result = null;
@@ -195,6 +205,47 @@ public abstract class AbstractSheets {
 	return result;
     }
 
+    /**
+     * Read Google sheet.
+     * 
+     * @param id    ID of Google Sheet.
+     * @param range Range of Google Sheet.
+     * @return row data.
+     */
+    public List<RowData> readRowData(String id, String range) {
+	int retries = 0;
+	List<RowData> result = null;
+
+	while (result == null) {
+	    try {
+		List<String> ranges = Collections.singletonList(range);
+		Spreadsheet sheet = sheets.spreadsheets().get(id).setRanges(ranges).setIncludeGridData(true).execute();
+		GridData gridData = sheet.getSheets().get(0).getData().get(0);
+
+		result = gridData.getRowData();
+		delay(1000);
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
+
+	return result;
+    }
+
+    /**
+     * Writes to Google Sheet.
+     * 
+     * @param id    ID of Google Sheet.
+     * @param range Range of Google Sheet.
+     * @param body  Data to write.
+     */
     public void writeSheet(String id, String range, ValueRange body) {
 	boolean completed = false;
 	int retries = 0;

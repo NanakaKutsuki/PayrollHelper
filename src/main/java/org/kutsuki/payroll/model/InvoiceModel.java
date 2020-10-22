@@ -52,6 +52,25 @@ public class InvoiceModel extends AbstractTimesheetModel {
 	}
     }
 
+    public String getHours(String service) {
+	String result = StringUtils.EMPTY;
+
+	if (isValid()) {
+	    BigDecimal hours = hoursMap.get(service);
+	    if (hours == null) {
+		hours = BigDecimal.ZERO;
+	    }
+
+	    result = hours.toString();
+	}
+
+	return result;
+    }
+
+    public Map<String, BigDecimal> getHoursMap() {
+	return hoursMap;
+    }
+
     /**
      * Creates key from customer and service
      * 
