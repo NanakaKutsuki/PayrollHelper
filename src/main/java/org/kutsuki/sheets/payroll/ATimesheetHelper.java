@@ -34,7 +34,7 @@ public class ATimesheetHelper extends AbstractTimesheet {
 	    parseCsv();
 	    updateMainSheet();
 	} catch (IOException e) {
-	    throw new IllegalStateException("Unable to parse CSV file.", e);
+	    throw new IllegalArgumentException("Unable to parse CSV file.", e);
 	}
     }
 

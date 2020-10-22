@@ -47,6 +47,7 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_26C_RANGE = "TTO 26C!E2:F2";
     private static final String TTO_26C_SERVICE = "ITSM Alliance EIT Ops TTO-026C-2020 - COVID";
     private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R10";
+    private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C20";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
     private LocalDate lastDate;
@@ -57,10 +58,9 @@ public class InvoiceHelper extends AbstractTimesheet {
      */
     public InvoiceHelper() {
 	LocalDate date = LocalDate.now();
-	// TODO remove debug
-	// if (date.getDayOfMonth() < 5) {
-	date = date.minusMonths(1);
-	// }
+	if (date.getDayOfMonth() < 5) {
+	    date = date.minusMonths(1);
+	}
 
 	this.lastDate = date.withDayOfMonth(date.getMonth().length(date.isLeapYear()));
 	this.validate = lastDate.minusDays(4);
@@ -73,26 +73,22 @@ public class InvoiceHelper extends AbstractTimesheet {
     public void run() {
 	try {
 	    parseCsv();
-	    // updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592);
-	    // updateITSM(TTO_14C_RANGE, TTO_14C_SERVICE, 91890592);
-	    // updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982);
-	    // updateITSM(TTO_16C_RANGE, TTO_16C_SERVICE, 812608982);
-	    // updateITSM(TTO_20_RANGE, TTO_20_SERVICE, 1973893852);
-	    // updateITSM(TTO_21_RANGE, TTO_21_SERVICE, 2023693587, -1747439098);
-	    // updateITSM(TTO_21C_RANGE, TTO_21C_SERVICE, 2023693587, -1747439098);
-	    // updateITSM(TTO_24_RANGE, TTO_24_SERVICE, -404564145, 798342352, -1301936526,
-	    // 284331424);
-	    // updateITSM(TTO_24C_RANGE, TTO_24C_SERVICE, -404564145, 798342352,
-	    // -1301936526, 284331424);
-	    // updateITSM(TTO_26_RANGE, TTO_26_SERVICE, 1973893852);
-	    // updateITSM(TTO_26C_RANGE, TTO_26C_SERVICE, 1973893852);
+	    updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592);
+	    updateITSM(TTO_14C_RANGE, TTO_14C_SERVICE, 91890592);
+	    updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982);
+	    updateITSM(TTO_16C_RANGE, TTO_16C_SERVICE, 812608982);
+	    updateITSM(TTO_20_RANGE, TTO_20_SERVICE, 1973893852);
+	    updateITSM(TTO_21_RANGE, TTO_21_SERVICE, 2023693587, -1747439098);
+	    updateITSM(TTO_21C_RANGE, TTO_21C_SERVICE, 2023693587, -1747439098);
+	    updateITSM(TTO_24_RANGE, TTO_24_SERVICE, -404564145, 798342352, -1301936526, 284331424);
+	    updateITSM(TTO_24C_RANGE, TTO_24C_SERVICE, -404564145, 798342352, -1301936526, 284331424);
+	    updateITSM(TTO_26_RANGE, TTO_26_SERVICE, 1973893852);
+	    updateITSM(TTO_26C_RANGE, TTO_26C_SERVICE, 1973893852);
 	    updateEveryoneElse();
-	    // updateSpendingPlan();
-	    // updateTimeOffDates();
-
-	    // undo debug here
+	    updateSpendingPlan();
+	    updateTimeOffDates();
 	} catch (IOException e) {
-	    throw new IllegalStateException("Unable to parse CSV file.", e);
+	    throw new IllegalArgumentException("Unable to parse CSV file.", e);
 	}
     }
 
@@ -175,7 +171,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 			    }
 			}
 
-			dataList.add(hours);
+			dataList.add(hours.toString());
 		    } else {
 			dataList.add(StringUtils.EMPTY);
 		    }
@@ -222,7 +218,45 @@ public class InvoiceHelper extends AbstractTimesheet {
     }
 
     private void updateEveryoneElse() {
+	List<RowData> rowData = readRowData(INVOICE_ID, EVERYBODY_ELSE_RANGE);
+	List<List<Object>> writeRowList = new ArrayList<List<Object>>();
 
+	for (RowData rd : rowData) {
+	    String name = StringUtils.substringBetween(rd.toString(), STRING_VALUE, Character.toString('"'));
+	    String formula = StringUtils.substringBetween(rd.toString(), FORMULA_VALUE, Character.toString('"'));
+
+	    InvoiceModel model = (InvoiceModel) getTimesheetMap().get(name.hashCode());
+
+	    List<Object> dataList = new ArrayList<Object>();
+	    dataList.add(name);
+
+	    if (model.isValid()) {
+		BigDecimal hours = BigDecimal.ZERO;
+		for (Entry<String, BigDecimal> entry : model.getHoursMap().entrySet()) {
+		    if (!StringUtils.startsWith(entry.getKey(), ITSM_ALLIANCE)) {
+			hours = hours.add(entry.getValue());
+		    }
+		}
+
+		dataList.add(hours);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(formula);
+		sb.append('+');
+		sb.append(hours);
+		dataList.add(sb.toString());
+	    } else {
+		dataList.add(StringUtils.EMPTY);
+		dataList.add(formula);
+	    }
+
+	    writeRowList.add(dataList);
+	}
+
+	ValueRange body = new ValueRange();
+	body.setValues(writeRowList);
+
+	writeSheet(INVOICE_ID, EVERYBODY_ELSE_RANGE, body);
     }
 
     private void updateTimeOffDates() {

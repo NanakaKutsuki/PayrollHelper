@@ -70,7 +70,7 @@ public abstract class AbstractSheets {
 	    this.sheets = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
 		    .setApplicationName(APPLICATION_NAME).build();
 	} catch (IOException | GeneralSecurityException | AWTException e) {
-	    throw new IllegalStateException(e);
+	    throw new IllegalArgumentException(e);
 	}
 
 	// Interns
