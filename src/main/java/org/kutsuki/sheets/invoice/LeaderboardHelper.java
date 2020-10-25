@@ -156,11 +156,6 @@ public class LeaderboardHelper extends AbstractSheets {
 	}
     }
 
-    @Override
-    public void keyIn(int ms) {
-	// do nothing
-    }
-
     private LeaderboardModel parseRow(List<Object> row, boolean average) throws DateTimeParseException {
 	if (average) {
 	    endDate = LocalDate.parse(String.valueOf(row.get(9)), DTF_PARSE);

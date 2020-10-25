@@ -25,7 +25,6 @@ public class BPayrollHelper extends AbstractSheets {
     /**
      * Keys in bonuses
      */
-    @Override
     public void keyIn(int ms) {
 	// inital time to alt-tab
 	delay(ms);

@@ -31,7 +31,6 @@ public class DVanguardHelper extends AbstractSheets {
     /**
      * Keys in Vanguard fields.
      */
-    @Override
     public void keyIn(int ms) {
 	delay(ms);
 
