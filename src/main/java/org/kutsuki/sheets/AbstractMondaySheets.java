@@ -1,21 +1,17 @@
 package org.kutsuki.sheets;
 
-import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.kutsuki.sheets.model.EmployeeModel;
 
 /**
  * Common methods shared by Bonus Helpers.
  * 
  * @author MatchaGreen
  */
-public abstract class AbstractBonusSheets extends AbstractSheets {
+public abstract class AbstractMondaySheets extends AbstractSheets {
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("M/d/yyyy");
     private static final String MONDAY_SHEET_ID = "1u45jYrE1NeVAMq3TvakW-ZJgW8cN_v7jB1qlTEFIPC8";
     private static final String MONDAY_RANGE = "Payroll!A:B";
@@ -24,34 +20,6 @@ public abstract class AbstractBonusSheets extends AbstractSheets {
     private LocalDate endDate;
     private Map<String, String> mondayMap;
     private String payDate;
-
-    /**
-     * Keys in bonuses.
-     */
-    public void keyIn(int ms) {
-	// inital time to alt-tab
-	delay(ms);
-
-	Collections.sort(getEmployeeList());
-	for (EmployeeModel employee : getEmployeeList()) {
-	    if (!employee.isPartner() && employee.isBonus()) {
-		keyPress(KeyEvent.VK_TAB);
-		keyPress(KeyEvent.VK_TAB);
-
-		keyIn(employee.getBonus());
-
-		keyPress(KeyEvent.VK_TAB);
-		keyPress(KeyEvent.VK_TAB);
-		keyPress(KeyEvent.VK_TAB);
-	    } else {
-		keyPress(KeyEvent.VK_SPACE);
-		keyPress(KeyEvent.VK_TAB);
-		keyPress(KeyEvent.VK_TAB);
-	    }
-	}
-
-	System.out.println("Done keying in!");
-    }
 
     /**
      * Get end date from Monday Sheet.

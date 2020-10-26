@@ -13,9 +13,8 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kutsuki.sheets.model.AbstractTimesheetModel;
-import org.kutsuki.sheets.model.InvoiceModel;
 
-public abstract class AbstractTimesheet extends AbstractBonusSheets {
+public abstract class AbstractTimesheet extends AbstractMondaySheets {
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("d MMM yyyy");
     private static final File DESKTOP = new File("C:\\Users\\MatchaGreen\\Desktop\\");
     private static final String PENDING = "Pending";
@@ -63,7 +62,7 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 
 		    AbstractTimesheetModel invoice = timesheetMap.get(fullName.hashCode());
 		    if (invoice == null) {
-			invoice = new InvoiceModel(fullName);
+			invoice = newTimesheet(fullName);
 			timesheetMap.put(fullName.hashCode(), invoice);
 		    }
 
@@ -78,7 +77,7 @@ public abstract class AbstractTimesheet extends AbstractBonusSheets {
 		}
 
 		// TODO Remove special case
-		InvoiceModel model = new InvoiceModel(StringUtils.EMPTY);
+		AbstractTimesheetModel model = newTimesheet(StringUtils.EMPTY);
 		model.validate();
 		timesheetMap.put(284331424, model);
 

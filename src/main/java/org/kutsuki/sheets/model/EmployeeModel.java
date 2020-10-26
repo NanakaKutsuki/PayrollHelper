@@ -1,5 +1,6 @@
 package org.kutsuki.sheets.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -127,7 +128,7 @@ public class EmployeeModel implements Comparable<EmployeeModel> {
      * @return <code>true</code> skip this employee.
      */
     public boolean isSkip() {
-	return getRegularPay() == null || getRegularPay().equals(ZERO);
+	return getRegularPay() == null || (getRegularPay().equals(ZERO) && getGeneralAdmin() == null);
     }
 
     public String getFirstName() {
@@ -163,7 +164,11 @@ public class EmployeeModel implements Comparable<EmployeeModel> {
     }
 
     public void setBonus(String bonus) {
-	this.bonus = bonus;
+	if (StringUtils.equals(bonus, BigDecimal.ZERO.toString())) {
+	    this.bonus = ZERO;
+	} else {
+	    this.bonus = bonus;
+	}
     }
 
     /**

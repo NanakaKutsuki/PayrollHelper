@@ -2,15 +2,13 @@ package org.kutsuki.sheets.payroll;
 
 import java.util.Map.Entry;
 
-import org.kutsuki.sheets.AbstractBonusSheets;
-
 /**
  * Automates keying into payroll system using values from the Main sheet and
  * overridden by Monday sheet.
  * 
  * @author MatchaGreen
  */
-public class CShortBonusHelper extends AbstractBonusSheets {
+public class CShortBonusHelper extends CBonusHelper {
     /**
      * Top level runner
      */

@@ -77,7 +77,7 @@ public class ATimesheetHelper extends AbstractTimesheet {
 	    } else {
 		payrollList.add(StringUtils.EMPTY);
 		payrollList.add(StringUtils.EMPTY);
-		payrollList.add(StringUtils.EMPTY);
+		payrollList.add(emptyIfZero(timesheet.getGA()));
 		payrollList.add(StringUtils.EMPTY);
 	    }
 

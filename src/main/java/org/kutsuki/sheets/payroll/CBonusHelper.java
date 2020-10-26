@@ -1,15 +1,17 @@
 package org.kutsuki.sheets.payroll;
 
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
-import org.kutsuki.sheets.AbstractBonusSheets;
+import org.kutsuki.sheets.AbstractMondaySheets;
 import org.kutsuki.sheets.model.EmployeeModel;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
@@ -20,7 +22,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
  * 
  * @author MatchaGreen
  */
-public class CBonusHelper extends AbstractBonusSheets {
+public class CBonusHelper extends AbstractMondaySheets {
     private static final String BBB = "BBB";
     private static final String BONUS = "Bonus";
     private static final String BONUS_RANGE = LocalDate.now().getYear() + "!A:D";
@@ -77,6 +79,34 @@ public class CBonusHelper extends AbstractBonusSheets {
 	updateBonusSheets();
 	updateMondaySheet();
 	keyIn(0);
+    }
+
+    /**
+     * Keys in bonuses.
+     */
+    public void keyIn(int ms) {
+	// inital time to alt-tab
+	delay(ms);
+
+	Collections.sort(getEmployeeList());
+	for (EmployeeModel employee : getEmployeeList()) {
+	    if (employee.isBonus()) {
+		keyPress(KeyEvent.VK_TAB);
+		keyPress(KeyEvent.VK_TAB);
+
+		keyIn(employee.getBonus());
+
+		keyPress(KeyEvent.VK_TAB);
+		keyPress(KeyEvent.VK_TAB);
+		keyPress(KeyEvent.VK_TAB);
+	    } else {
+		keyPress(KeyEvent.VK_SPACE);
+		keyPress(KeyEvent.VK_TAB);
+		keyPress(KeyEvent.VK_TAB);
+	    }
+	}
+
+	System.out.println("Done keying in!");
     }
 
     /**
