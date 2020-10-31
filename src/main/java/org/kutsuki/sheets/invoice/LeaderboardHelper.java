@@ -47,7 +47,7 @@ public class LeaderboardHelper extends AbstractSheets {
     private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("MMMM yyyy");
     private static final DateTimeFormatter DTF_PARSE = DateTimeFormatter.ofPattern("M/d/yyyy");
     private static final String INVOICE_ID = "1IER8vbOZpru8fjEkOMVRyObaMgIDM2yKMAUk6jJH9uI";
-    private static final String TIME_OFF_RANGE = "Time Off!A2:J30";
+    private static final String TIME_OFF_RANGE = "Time Off!A2:J";
 
     private EmailManager email;
     private int holidays;

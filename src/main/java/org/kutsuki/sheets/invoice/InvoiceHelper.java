@@ -38,9 +38,9 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_21_SERVICE = "ITSM Alliance EIT Ops TTO-021-2020";
     private static final String TTO_21C_RANGE = "TTO 21C!E2:F3";
     private static final String TTO_21C_SERVICE = "ITSM Alliance EIT Ops TTO-021C-2020 - COVID";
-    private static final String TTO_24_RANGE = "TTO 24!E2:F4";
+    private static final String TTO_24_RANGE = "TTO 24!E2:F5";
     private static final String TTO_24_SERVICE = "ITSM Alliance EIT Ops TTO-024-2020";
-    private static final String TTO_24C_RANGE = "TTO 24C!E2:F4";
+    private static final String TTO_24C_RANGE = "TTO 24C!E2:F5";
     private static final String TTO_24C_SERVICE = "ITSM Alliance EIT Ops TTO-024C-2020 - COVID";
     private static final String TTO_26_RANGE = "TTO 26!E2:F2";
     private static final String TTO_26_SERVICE = "ITSM Alliance EIT Ops TTO-026-2020";
@@ -108,6 +108,8 @@ public class InvoiceHelper extends AbstractTimesheet {
     }
 
     private void updateITSM(String range, String service, int... keys) {
+	System.out.println("Working on: " + service);
+
 	List<RowData> rowData = readRowData(INVOICE_ID, range);
 
 	List<String> formulaList = new ArrayList<String>();
@@ -191,6 +193,8 @@ public class InvoiceHelper extends AbstractTimesheet {
 	body.setValues(writeRowList);
 
 	writeSheet(INVOICE_ID, SPENDING_PLAN_RANGE, body);
+
+	System.out.println("Updated Spending Plan!");
     }
 
     private String updateActual(int month, int row) {
@@ -257,6 +261,8 @@ public class InvoiceHelper extends AbstractTimesheet {
 	body.setValues(writeRowList);
 
 	writeSheet(INVOICE_ID, EVERYBODY_ELSE_RANGE, body);
+
+	System.out.println("Finished with Everybody Else!");
     }
 
     private void updateTimeOffDates() {
@@ -271,6 +277,8 @@ public class InvoiceHelper extends AbstractTimesheet {
 	body.setValues(writeRowList);
 
 	writeSheet(INVOICE_ID, TIME_OFF_RANGE, body);
+
+	System.out.println("Updated Time Off Dates!");
     }
 
     /**

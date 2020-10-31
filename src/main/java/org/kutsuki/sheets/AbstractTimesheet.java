@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -39,6 +40,13 @@ public abstract class AbstractTimesheet extends AbstractMondaySheets {
 	int i = 0;
 	File[] files = DESKTOP.listFiles();
 	this.timesheetMap = new HashMap<Integer, AbstractTimesheetModel>();
+	LocalDate lastDate = getLastDate();
+
+	if (lastDate.getDayOfWeek().equals(DayOfWeek.SATURDAY)) {
+	    lastDate = lastDate.minusDays(1);
+	} else if (lastDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+	    lastDate = lastDate.minusDays(2);
+	}
 
 	// go through desktop files
 	while (i < files.length && !found) {
@@ -68,7 +76,7 @@ public abstract class AbstractTimesheet extends AbstractMondaySheets {
 
 		    if (date.isAfter(getValidationPeriod()) && !status.equals(PENDING)) {
 			invoice.validate();
-		    } else if (date.equals(getLastDate()) && status.equals(PENDING)) {
+		    } else if (date.equals(lastDate) && status.equals(PENDING)) {
 			invoice.validate();
 			System.out.println(invoice.getFullName() + " - Status still pending!");
 		    }
