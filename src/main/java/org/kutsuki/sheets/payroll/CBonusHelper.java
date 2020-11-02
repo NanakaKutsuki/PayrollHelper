@@ -63,6 +63,8 @@ public class CBonusHelper extends AbstractMondaySheets {
 	this.nameIdMap.put(722153521, "1fN1ZdapD_DzwcWoNtplMU60g1HCPSANHxkwbiYaOMFc");
 	this.nameIdMap.put(1973893852, "1tnbQAT-MAhLaQuVHzjnhXJIQLnanvfgy9T_Ybeh1y-0");
 	this.nameIdMap.put(-412921826, "1nObUgQjFLZJnLy6A6_ZB7S1mPtpLlb-qzi1TrsKbtVU");
+	this.nameIdMap.put(608561597, "1NdWxtrWEG3PSnVj35QXw_Da04ign3xvUh2YJ52cet54");
+	this.nameIdMap.put(203595292, "1pHT8P3ME08Lk9vt0HypEXWLV4w6463HVLvEqMfbHn3s");
 
 	// TODO Remove special case
 	// this.nameIdMap.put(284331424,
@@ -204,5 +206,8 @@ public class CBonusHelper extends AbstractMondaySheets {
     public static void main(String[] args) {
 	CBonusHelper helper = new CBonusHelper();
 	helper.run();
+
+//	String name = "";
+//	System.out.println(name.hashCode());
     }
 }

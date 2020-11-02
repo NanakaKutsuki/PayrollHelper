@@ -26,6 +26,9 @@ import com.google.api.services.sheets.v4.SheetsScopes;
 /**
  * Common methods shared by all Helpers.
  * 
+ * Adding a new Employee: Update If EITO, update InvoiceHelper Range. Update
+ * BonusHelper
+ * 
  * @author MatchaGreen
  */
 public abstract class AbstractGoogle {

@@ -47,7 +47,7 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_26C_RANGE = "TTO 26C!E2:F2";
     private static final String TTO_26C_SERVICE = "ITSM Alliance EIT Ops TTO-026C-2020 - COVID";
     private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R10";
-    private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C20";
+    private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
     private LocalDate lastDate;
