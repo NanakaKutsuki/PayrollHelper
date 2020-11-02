@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 public class InvoiceModel extends AbstractTimesheetModel {
+    private boolean sentinel;
     private Map<String, BigDecimal> hoursMap;
 
     /**
@@ -16,7 +17,13 @@ public class InvoiceModel extends AbstractTimesheetModel {
      */
     public InvoiceModel(String fullName) {
 	super(fullName);
+	this.sentinel = false;
 	this.hoursMap = new HashMap<String, BigDecimal>();
+    }
+
+    @Override
+    public boolean isValid() {
+	return super.isValid() && !sentinel;
     }
 
     /**
@@ -49,6 +56,11 @@ public class InvoiceModel extends AbstractTimesheetModel {
 	    }
 
 	    hoursMap.put(key, total.add(hours));
+	} else if (!StringUtils.equals(service, getBusinessDevelopment())
+		&& !StringUtils.equals(service, getGeneralAdmin()) && !StringUtils.equals(service, getSickLeave())
+		&& !StringUtils.equals(service, getSecurity()) && !StringUtils.equals(service, getCovidSickLeave())) {
+	    errorIfSentinel(customer, service);
+	    sentinel = true;
 	}
     }
 
