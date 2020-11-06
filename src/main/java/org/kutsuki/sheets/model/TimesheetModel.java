@@ -29,11 +29,11 @@ public class TimesheetModel extends AbstractTimesheetModel {
     @Override
     public String toString() {
 	StringBuilder sb = new StringBuilder();
-	sb.append(getFullName()).append(',').append(' ');
-	sb.append(getRegularPay()).append(',').append(' ');
-	sb.append(getBusinessDevelopment()).append(',').append(' ');
-	sb.append(getGeneralAdmin()).append(',').append(' ');
-	sb.append(getSickPay()).append(',').append(' ');
+	sb.append(getFullName()).append(',').append(StringUtils.SPACE);
+	sb.append(getRegularPay()).append(',').append(StringUtils.SPACE);
+	sb.append(getBusinessDevelopment()).append(',').append(StringUtils.SPACE);
+	sb.append(getGeneralAdmin()).append(',').append(StringUtils.SPACE);
+	sb.append(getSickPay()).append(',').append(StringUtils.SPACE);
 	sb.append(isValid());
 	return sb.toString();
     }

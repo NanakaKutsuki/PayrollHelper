@@ -77,12 +77,12 @@ public class EmployeeModel implements Comparable<EmployeeModel> {
     @Override
     public String toString() {
 	StringBuilder sb = new StringBuilder();
-	sb.append(getFirstName()).append(',').append(' ');
-	sb.append(getLastName()).append(',').append(' ');
-	sb.append(getRegularPay()).append(',').append(' ');
-	sb.append(getBusinessDevelopment()).append(',').append(' ');
-	sb.append(getGeneralAdmin()).append(',').append(' ');
-	sb.append(getSickPay()).append(',').append(' ');
+	sb.append(getFirstName()).append(',').append(StringUtils.SPACE);
+	sb.append(getLastName()).append(',').append(StringUtils.SPACE);
+	sb.append(getRegularPay()).append(',').append(StringUtils.SPACE);
+	sb.append(getBusinessDevelopment()).append(',').append(StringUtils.SPACE);
+	sb.append(getGeneralAdmin()).append(',').append(StringUtils.SPACE);
+	sb.append(getSickPay()).append(',').append(StringUtils.SPACE);
 	sb.append(getBonus());
 	return sb.toString();
     }

@@ -32,8 +32,8 @@ public class InvoiceModel extends AbstractTimesheetModel {
     @Override
     public String toString() {
 	StringBuilder sb = new StringBuilder();
-	sb.append(getFullName()).append(',').append(' ');
-	sb.append(hoursMap).append(',').append(' ');
+	sb.append(getFullName()).append(',').append(StringUtils.SPACE);
+	sb.append(hoursMap).append(',').append(StringUtils.SPACE);
 	sb.append(isValid());
 	return sb.toString();
     }
