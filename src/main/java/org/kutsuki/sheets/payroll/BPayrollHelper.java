@@ -23,7 +23,7 @@ public class BPayrollHelper extends AbstractSheets {
     }
 
     /**
-     * Keys in bonuses
+     * Keys in payroll
      */
     public void keyIn(int ms) {
 	// inital time to alt-tab
