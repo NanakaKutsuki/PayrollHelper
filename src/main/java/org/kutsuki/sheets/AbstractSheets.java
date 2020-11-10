@@ -162,7 +162,6 @@ public abstract class AbstractSheets extends AbstractGoogle {
 	    try {
 		ValueRange response = sheets.spreadsheets().values().get(id, range).execute();
 		result = response.getValues();
-		delay(1000);
 	    } catch (IOException e) {
 		retries++;
 		System.out.println("Retrying " + retries + "...");
@@ -196,7 +195,6 @@ public abstract class AbstractSheets extends AbstractGoogle {
 		GridData gridData = sheet.getSheets().get(0).getData().get(0);
 
 		result = gridData.getRowData();
-		delay(1000);
 	    } catch (IOException e) {
 		retries++;
 		System.out.println("Retrying " + retries + "...");
@@ -226,7 +224,6 @@ public abstract class AbstractSheets extends AbstractGoogle {
 	while (!completed) {
 	    try {
 		sheets.spreadsheets().values().update(id, range, body).setValueInputOption(USER_ENTERED).execute();
-		delay(1000);
 		completed = true;
 	    } catch (IOException e) {
 		retries++;
