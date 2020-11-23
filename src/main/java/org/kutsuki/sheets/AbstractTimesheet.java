@@ -98,6 +98,10 @@ public abstract class AbstractTimesheet extends AbstractMondaySheets {
 
 	    i++;
 	}
+
+	if (!found) {
+	    throw new IllegalStateException("Timesheet file not found!");
+	}
     }
 
     public Map<Integer, AbstractTimesheetModel> getTimesheetMap() {
