@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -18,11 +19,11 @@ public class LeaderboardModel implements Comparable<LeaderboardModel> {
     private String email;
 
     public LeaderboardModel(List<Object> row) {
-	this.workedThisMonth = new BigDecimal(String.valueOf(row.get(1))).setScale(2, RoundingMode.HALF_UP);
-	this.offThisMonth = new BigDecimal(String.valueOf(row.get(2))).setScale(2, RoundingMode.HALF_UP);
-	this.workedThisYear = new BigDecimal(String.valueOf(row.get(3))).setScale(2, RoundingMode.HALF_UP);
-	this.workableThisYear = new BigDecimal(String.valueOf(row.get(4))).setScale(2, RoundingMode.HALF_UP);
-	this.offThisYear = new BigDecimal(String.valueOf(row.get(5))).setScale(2, RoundingMode.HALF_UP);
+	this.workedThisMonth = toBigDecimal(row.get(1));
+	this.offThisMonth = toBigDecimal(row.get(2));
+	this.workedThisYear = toBigDecimal(row.get(3));
+	this.workableThisYear = toBigDecimal(row.get(4));
+	this.offThisYear = toBigDecimal(row.get(5));
 	this.totalDaysOff = Integer.parseInt(String.valueOf(row.get(6)));
 	this.percentWorked = String.valueOf(row.get(7));
 	this.email = String.valueOf(row.get(9));
@@ -102,5 +103,10 @@ public class LeaderboardModel implements Comparable<LeaderboardModel> {
 
     public String getEmail() {
 	return email;
+    }
+
+    private BigDecimal toBigDecimal(Object o) {
+	String escaped = StringUtils.remove(String.valueOf(o), ',');
+	return new BigDecimal(escaped).setScale(2, RoundingMode.HALF_UP);
     }
 }

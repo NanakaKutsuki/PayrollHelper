@@ -290,5 +290,4 @@ public class InvoiceHelper extends AbstractTimesheet {
 	InvoiceHelper helper = new InvoiceHelper();
 	helper.run();
     }
-
 }

@@ -58,21 +58,16 @@ public class ITSMHelper extends AbstractDocs {
     public void run() {
 	String folderId = createFolder(date.getMonthValue() - 1);
 	createInvoice("TTO-14-2020", folderId);
-	createInvoice("TTO-14C-2020", folderId);
 	createInvoice("TTO-16-2020", folderId);
-	createInvoice("TTO-16C-2020", folderId);
 	createInvoice("TTO-20-2020", folderId);
 	createInvoice("TTO-21-2020", folderId);
-	createInvoice("TTO-21C-2020", folderId);
 	createInvoice("TTO-24-2020", folderId);
-	createInvoice("TTO-24C-2020", folderId);
 	createInvoice("TTO-26-2020", folderId);
-	createInvoice("TTO-26C-2020", folderId);
     }
 
     public void createInvoice(String title, String folderId) {
 	String id = createDoc(title);
-	moveFile(title, folderId);
+	moveFile(id, folderId);
 
 	List<Request> requestList = new ArrayList<Request>();
 	requestList.add(new Request().setInsertInlineImage(
