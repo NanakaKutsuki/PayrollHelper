@@ -65,8 +65,9 @@ public class CBonusHelper extends AbstractMondaySheets {
 	this.nameIdMap.put(-412921826, "1nObUgQjFLZJnLy6A6_ZB7S1mPtpLlb-qzi1TrsKbtVU");
 	this.nameIdMap.put(608561597, "1NdWxtrWEG3PSnVj35QXw_Da04ign3xvUh2YJ52cet54");
 	this.nameIdMap.put(203595292, "1pHT8P3ME08Lk9vt0HypEXWLV4w6463HVLvEqMfbHn3s");
+	this.nameIdMap.put(1910574595, "1a3uPMFJzB53rtO48KVEJ-dgBAQQFP46sCXtf6LRq5_4");
 
-	// TODO Remove special case
+	// TODO Remove special case MD
 	// this.nameIdMap.put(284331424,
 	// "1jZaYzvlM8C_UdxKUhvvXBlZ64eFpGukZhViXC1wVsIM");
     }
@@ -141,8 +142,9 @@ public class CBonusHelper extends AbstractMondaySheets {
 		}
 
 		BigDecimal payout = bonus.add(owed);
-		if (payout.compareTo(BigDecimal.ZERO) == 1 && entry.getKey() != 795816972
-			&& entry.getKey() != 148086847) {
+
+		// TODO remove special case AM
+		if (payout.compareTo(BigDecimal.ZERO) == 1 && entry.getKey() != 795816972) {
 		    List<Object> payoutList = new ArrayList<Object>();
 		    payoutList.add(getPayDate());
 		    payoutList.add(PAYOUT);

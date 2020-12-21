@@ -136,7 +136,7 @@ public abstract class AbstractSheets extends AbstractGoogle {
 	while (i < rowList.size() && rowList.get(i).size() > 0) {
 	    EmployeeModel employee = new EmployeeModel(rowList.get(i));
 
-	    // TODO Remove special case
+	    // TODO Remove special case MD
 	    if (employee.getFullName().hashCode() != 284331424) {
 		employeeMap.put(employee.getFullName().hashCode(), employee);
 	    }

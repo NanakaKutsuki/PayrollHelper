@@ -84,7 +84,7 @@ public abstract class AbstractTimesheet extends AbstractMondaySheets {
 		    invoice.addHours(customer, service, hours);
 		}
 
-		// TODO Remove special case
+		// TODO Remove special case MD
 		AbstractTimesheetModel model = newTimesheet(StringUtils.EMPTY);
 		model.validate();
 		timesheetMap.put(284331424, model);
