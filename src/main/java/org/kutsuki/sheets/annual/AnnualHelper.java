@@ -93,12 +93,20 @@ public class AnnualHelper extends AbstractBonusSheets {
 	    writeSheet(spreadsheetId, year + CARRYOVER_RANGE + row, body);
 
 	    writeRowList.clear();
-	    row = 4;
 
+	    StringBuilder sb = new StringBuilder();
+	    sb.append('=');
+	    sb.append('-');
+	    sb.append(year);
+	    sb.append('!');
+	    sb.append('C');
+	    sb.append(row);
+
+	    row = 4;
 	    dataList = new ArrayList<Object>();
 	    dataList.add(LocalDate.of(nextYear, 1, 1).toString());
 	    dataList.add(CARRYOVER);
-	    dataList.add(carryover);
+	    dataList.add(sb.toString());
 	    dataList.add(getChecksum(row));
 	    writeRowList.add(dataList);
 	    row++;
