@@ -32,6 +32,8 @@ import com.google.api.services.sheets.v4.model.ValueRange;
  * @author MatchaGreen
  */
 public abstract class AbstractSheets extends AbstractGoogle {
+    private static final String FORMULA_CLOSE = "\"},";
+    private static final String FORMULA_OPEN = "\"formulaValue\":\"";
     private static final String MAIN_SHEET_ID = "1AGzsuTlo03umh2e7bGsRV0CTwo6hY9KNlViABVSjj3g";
     private static final String MAIN_RANGE = "Calculator!A2:G";
     private static final String TITLE = "title";
@@ -108,6 +110,14 @@ public abstract class AbstractSheets extends AbstractGoogle {
      */
     public String getMainSheetId() {
 	return MAIN_SHEET_ID;
+    }
+
+    public String getFormulaClose() {
+	return FORMULA_CLOSE;
+    }
+
+    public String getFormulaOpen() {
+	return FORMULA_OPEN;
     }
 
     public int getSheetId(String spreadsheetId, String search) {
@@ -298,6 +308,8 @@ public abstract class AbstractSheets extends AbstractGoogle {
 		delay(1000);
 	    }
 	}
+
+	System.out.println("Sheet Copied! " + dest);
     }
 
     public void updateSheetTitle(String spreadsheetId, int sheetId, String title) {

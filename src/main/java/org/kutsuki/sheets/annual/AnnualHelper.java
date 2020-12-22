@@ -20,8 +20,6 @@ public class AnnualHelper extends AbstractBonusSheets {
     private static final String CARRYOVER = "Carryover";
     private static final String CARRYOVER_RANGE = "!A";
     private static final String COPY_OF = "Copy of";
-    private static final String FORMULA_CLOSE = "\"},";
-    private static final String FORMULA_VALUE = "\"formulaValue\":\"";
     private static final String MAIN_RANGE = "Calculator!A2:H";
     private static final String SICK_LEAVE = "Sick Leave";
     private static final String TEMPLATE_ID = "13QJaSWURfFQu2dfgKU_8KTluHaUyKk1gnhI0JnDauVg";
@@ -124,7 +122,7 @@ public class AnnualHelper extends AbstractBonusSheets {
 	ValueRange body = new ValueRange();
 	body.setValues(writeRowList);
 
-	writeSheet(spreadsheetId, nextYear + CARRYOVER_RANGE + row, body);
+	writeSheet(spreadsheetId, nextYear + CARRYOVER_RANGE + Integer.toString(4), body);
     }
 
     private void copyBonusSummary() {
@@ -146,7 +144,7 @@ public class AnnualHelper extends AbstractBonusSheets {
 	List<RowData> rowData = readRowData(BONUS_SUMMARY_ID, range.toString());
 	List<String> formulaList = new ArrayList<String>();
 	for (RowData rd : rowData) {
-	    String formula = StringUtils.substringBetween(rd.toString(), FORMULA_VALUE, FORMULA_CLOSE);
+	    String formula = StringUtils.substringBetween(rd.toString(), getFormulaOpen(), getFormulaClose());
 
 	    if (formula != null) {
 		formulaList.add(formula);
@@ -159,7 +157,9 @@ public class AnnualHelper extends AbstractBonusSheets {
 
 	for (String formula : formulaList) {
 	    List<Object> dataList = new ArrayList<Object>();
-	    dataList.add(StringUtils.replace(formula, search, replacement));
+	    String data = StringUtils.replace(formula, search, replacement);
+	    data = StringUtils.remove(data, Character.toString('\\'));
+	    dataList.add(data);
 	    writeRowList.add(dataList);
 	}
 
@@ -175,7 +175,9 @@ public class AnnualHelper extends AbstractBonusSheets {
     }
 
     private BigDecimal parseBigDecimal(Object bd) {
-	return new BigDecimal(StringUtils.remove(String.valueOf(bd), '$'));
+	String val = StringUtils.remove(String.valueOf(bd), '$');
+	val = StringUtils.remove(val, ',');
+	return new BigDecimal(val);
     }
 
     public static void main(String[] args) {

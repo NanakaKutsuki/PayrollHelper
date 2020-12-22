@@ -17,7 +17,6 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class InvoiceHelper extends AbstractTimesheet {
     private static final String COVID = "COVID";
-    private static final String FORMULA_VALUE = "\"formulaValue\":\"";
     private static final String INVOICE_ID = "1IER8vbOZpru8fjEkOMVRyObaMgIDM2yKMAUk6jJH9uI";
     private static final String ITSM_ALLIANCE = "ITSM Alliance";
     private static final String NUMBER_VALUE = "\"userEnteredValue\":{\"numberValue\":";
@@ -114,7 +113,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 
 	List<String> formulaList = new ArrayList<String>();
 	for (RowData rd : rowData) {
-	    formulaList.add(StringUtils.substringBetween(rd.toString(), FORMULA_VALUE, Character.toString('"')));
+	    formulaList.add(StringUtils.substringBetween(rd.toString(), getFormulaOpen(), getFormulaClose()));
 	}
 
 	List<List<Object>> writeRowList = new ArrayList<List<Object>>();
@@ -154,7 +153,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    RowData rd = rowData.get(i);
 	    String name = StringUtils.substringBetween(rd.toString(), STRING_VALUE, Character.toString('"'));
 	    String[] values = StringUtils.substringsBetween(rd.toString(), NUMBER_VALUE, Character.toString('}'));
-	    String[] formulas = StringUtils.substringsBetween(rd.toString(), FORMULA_VALUE, Character.toString('"'));
+	    String[] formulas = StringUtils.substringsBetween(rd.toString(), getFormulaOpen(), getFormulaClose());
 	    int month = (int) formulas[2].charAt(5) - 68;
 
 	    List<Object> dataList = new ArrayList<Object>();
@@ -227,7 +226,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 
 	for (RowData rd : rowData) {
 	    String name = StringUtils.substringBetween(rd.toString(), STRING_VALUE, Character.toString('"'));
-	    String formula = StringUtils.substringBetween(rd.toString(), FORMULA_VALUE, Character.toString('"'));
+	    String formula = StringUtils.substringBetween(rd.toString(), getFormulaOpen(), getFormulaClose());
 
 	    InvoiceModel model = (InvoiceModel) getTimesheetMap().get(name.hashCode());
 

@@ -47,8 +47,8 @@ public abstract class AbstractBonusSheets extends AbstractMondaySheets {
 	this.nameIdMap.put(203595292, "1pHT8P3ME08Lk9vt0HypEXWLV4w6463HVLvEqMfbHn3s");
 	this.nameIdMap.put(1910574595, "1a3uPMFJzB53rtO48KVEJ-dgBAQQFP46sCXtf6LRq5_4");
 
-	// TODO Remove special case MD
-	this.nameIdMap.put(284331424, "1jZaYzvlM8C_UdxKUhvvXBlZ64eFpGukZhViXC1wVsIM");
+//	// TODO Remove special case MD
+//	this.nameIdMap.put(284331424, "1jZaYzvlM8C_UdxKUhvvXBlZ64eFpGukZhViXC1wVsIM");
     }
 
     public String getChecksum(int row) {
