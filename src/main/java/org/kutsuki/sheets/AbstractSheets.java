@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.kutsuki.sheets.model.EmployeeModel;
 
 import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
+import com.google.api.services.sheets.v4.model.CopySheetToAnotherSpreadsheetRequest;
 import com.google.api.services.sheets.v4.model.GridData;
+import com.google.api.services.sheets.v4.model.Request;
 import com.google.api.services.sheets.v4.model.RowData;
+import com.google.api.services.sheets.v4.model.Sheet;
+import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.UpdateSheetPropertiesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 /**
@@ -27,6 +34,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 public abstract class AbstractSheets extends AbstractGoogle {
     private static final String MAIN_SHEET_ID = "1AGzsuTlo03umh2e7bGsRV0CTwo6hY9KNlViABVSjj3g";
     private static final String MAIN_RANGE = "Calculator!A2:G";
+    private static final String TITLE = "title";
     private static final String USER_ENTERED = "USER_ENTERED";
 
     private Map<Integer, EmployeeModel> employeeMap;
@@ -100,6 +108,37 @@ public abstract class AbstractSheets extends AbstractGoogle {
      */
     public String getMainSheetId() {
 	return MAIN_SHEET_ID;
+    }
+
+    public int getSheetId(String spreadsheetId, String search) {
+	int id = -1;
+	int retries = 0;
+
+	while (id == -1) {
+	    try {
+		Spreadsheet spreadsheet = sheets.spreadsheets().get(spreadsheetId).execute();
+
+		Iterator<Sheet> itr = spreadsheet.getSheets().iterator();
+		while (id == -1 && itr.hasNext()) {
+		    Sheet sheet = itr.next();
+
+		    if (StringUtils.contains(sheet.getProperties().getTitle(), search)) {
+			id = sheet.getProperties().getSheetId();
+		    }
+		}
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
+
+	return id;
     }
 
     /**
@@ -224,6 +263,60 @@ public abstract class AbstractSheets extends AbstractGoogle {
 	while (!completed) {
 	    try {
 		sheets.spreadsheets().values().update(id, range, body).setValueInputOption(USER_ENTERED).execute();
+		completed = true;
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
+    }
+
+    public void copySheet(String src, int sheetId, String dest) {
+	boolean completed = false;
+	int retries = 0;
+
+	while (!completed) {
+	    try {
+		CopySheetToAnotherSpreadsheetRequest content = new CopySheetToAnotherSpreadsheetRequest();
+		content.setDestinationSpreadsheetId(dest);
+		sheets.spreadsheets().sheets().copyTo(src, sheetId, content).execute();
+		completed = true;
+	    } catch (IOException e) {
+		retries++;
+		System.out.println("Retrying " + retries + "...");
+
+		if (retries == 10) {
+		    e.printStackTrace();
+		}
+
+		delay(1000);
+	    }
+	}
+    }
+
+    public void updateSheetTitle(String spreadsheetId, int sheetId, String title) {
+	boolean completed = false;
+	int retries = 0;
+
+	while (!completed) {
+	    try {
+		UpdateSheetPropertiesRequest uspr = new UpdateSheetPropertiesRequest();
+		SheetProperties properties = new SheetProperties();
+		properties.setSheetId(sheetId);
+		properties.setTitle(title);
+		uspr.setFields(TITLE);
+		uspr.setProperties(properties);
+		Request request = new Request();
+		request.setUpdateSheetProperties(uspr);
+		BatchUpdateSpreadsheetRequest busr = new BatchUpdateSpreadsheetRequest();
+		busr.setRequests(Collections.singletonList(request));
+		sheets.spreadsheets().batchUpdate(spreadsheetId, busr).execute();
 		completed = true;
 	    } catch (IOException e) {
 		retries++;
