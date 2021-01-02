@@ -32,7 +32,7 @@ import com.google.api.services.sheets.v4.model.ValueRange;
  * @author MatchaGreen
  */
 public abstract class AbstractSheets extends AbstractGoogle {
-    private static final String FORMULA_CLOSE = "\"},";
+    private static final String FORMULA_CLOSE = "\"}";
     private static final String FORMULA_OPEN = "\"formulaValue\":\"";
     private static final String MAIN_SHEET_ID = "1AGzsuTlo03umh2e7bGsRV0CTwo6hY9KNlViABVSjj3g";
     private static final String MAIN_RANGE = "Calculator!A2:G";

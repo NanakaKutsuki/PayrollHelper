@@ -56,7 +56,7 @@ public class ITSMHelper extends AbstractDocs {
 
     @Override
     public void run() {
-	String folderId = createFolder(date.getMonthValue() - 1);
+	String folderId = createFolder(date.minusMonths(1).getMonthValue());
 	createInvoice("TTO-14-2020", folderId);
 	createInvoice("TTO-16-2020", folderId);
 	createInvoice("TTO-20-2020", folderId);

@@ -27,9 +27,9 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_14_SERVICE = "ITSM Alliance EIT Ops TTO-014-2020";
     private static final String TTO_14C_RANGE = "TTO 14C!E2:F2";
     private static final String TTO_14C_SERVICE = "ITSM Alliance EIT Ops TTO-014C-2020 - COVID";
-    private static final String TTO_16_RANGE = "TTO 16!E2:F2";
+    private static final String TTO_16_RANGE = "TTO 16!E2:F3";
     private static final String TTO_16_SERVICE = "ITSM Alliance EIT Ops TTO-016-2020";
-    private static final String TTO_16C_RANGE = "TTO 16C!E2:F2";
+    private static final String TTO_16C_RANGE = "TTO 16C!E2:F3";
     private static final String TTO_16C_SERVICE = "ITSM Alliance EIT Ops TTO-016C-2020 - COVID";
     private static final String TTO_20_RANGE = "TTO 20!E2:F2";
     private static final String TTO_20_SERVICE = "ITSM Alliance EIT Ops TTO-020-2020";
@@ -45,7 +45,7 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_26_SERVICE = "ITSM Alliance EIT Ops TTO-026-2020";
     private static final String TTO_26C_RANGE = "TTO 26C!E2:F2";
     private static final String TTO_26C_SERVICE = "ITSM Alliance EIT Ops TTO-026C-2020 - COVID";
-    private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R10";
+    private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R11";
     private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
@@ -74,8 +74,8 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    parseCsv();
 	    updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592);
 	    updateITSM(TTO_14C_RANGE, TTO_14C_SERVICE, 91890592);
-	    updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982);
-	    updateITSM(TTO_16C_RANGE, TTO_16C_SERVICE, 812608982);
+	    updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982, 1910574595);
+	    updateITSM(TTO_16C_RANGE, TTO_16C_SERVICE, 812608982, 1910574595);
 	    updateITSM(TTO_20_RANGE, TTO_20_SERVICE, 1973893852);
 	    updateITSM(TTO_21_RANGE, TTO_21_SERVICE, 2023693587, -1747439098);
 	    updateITSM(TTO_21C_RANGE, TTO_21C_SERVICE, 2023693587, -1747439098);
