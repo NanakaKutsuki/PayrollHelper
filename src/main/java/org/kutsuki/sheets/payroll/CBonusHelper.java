@@ -93,8 +93,7 @@ public class CBonusHelper extends AbstractBonusSheets {
 
 		BigDecimal payout = bonus.add(owed);
 
-		// TODO remove special case AM
-		if (payout.compareTo(BigDecimal.ZERO) == 1 && entry.getKey() != 795816972) {
+		if (payout.compareTo(BigDecimal.ZERO) == 1) {
 		    List<Object> payoutList = new ArrayList<Object>();
 		    payoutList.add(getPayDate());
 		    payoutList.add(PAYOUT);
