@@ -58,7 +58,8 @@ public class InvoiceModel extends AbstractTimesheetModel {
 	    hoursMap.put(key, total.add(hours));
 	} else if (!StringUtils.equals(service, getBusinessDevelopment())
 		&& !StringUtils.equals(service, getGeneralAdmin()) && !StringUtils.equals(service, getSickLeave())
-		&& !StringUtils.equals(service, getSecurity()) && !StringUtils.equals(service, getCovidSickLeave())) {
+		&& !StringUtils.equals(service, getAdmin()) && !StringUtils.equals(service, getSecurity())
+		&& !StringUtils.equals(service, getCovidSickLeave())) {
 	    errorIfSentinel(customer, service);
 	    sentinel = true;
 	}

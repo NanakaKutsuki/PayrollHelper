@@ -57,16 +57,16 @@ public class LeaderboardHelper extends AbstractSheets {
     public LeaderboardHelper() {
 	this.email = new EmailManager();
 	this.holidayList = new ArrayList<LocalDate>();
-	this.holidayList.add(LocalDate.of(2020, 1, 1));
-	this.holidayList.add(LocalDate.of(2020, 1, 20));
-	this.holidayList.add(LocalDate.of(2020, 2, 17));
-	this.holidayList.add(LocalDate.of(2020, 5, 25));
-	this.holidayList.add(LocalDate.of(2020, 7, 3));
-	this.holidayList.add(LocalDate.of(2020, 9, 7));
-	this.holidayList.add(LocalDate.of(2020, 10, 12));
-	this.holidayList.add(LocalDate.of(2020, 11, 11));
-	this.holidayList.add(LocalDate.of(2020, 11, 26));
-	this.holidayList.add(LocalDate.of(2020, 12, 25));
+	this.holidayList.add(LocalDate.of(2021, 1, 1));
+	this.holidayList.add(LocalDate.of(2021, 1, 18));
+	this.holidayList.add(LocalDate.of(2021, 2, 15));
+	this.holidayList.add(LocalDate.of(2021, 5, 31));
+	this.holidayList.add(LocalDate.of(2021, 7, 5));
+	this.holidayList.add(LocalDate.of(2021, 9, 6));
+	this.holidayList.add(LocalDate.of(2021, 10, 11));
+	this.holidayList.add(LocalDate.of(2021, 11, 11));
+	this.holidayList.add(LocalDate.of(2021, 11, 25));
+	this.holidayList.add(LocalDate.of(2021, 12, 24));
 
 	if (LocalDate.now().minusWeeks(1).getYear() != holidayList.get(0).getYear()) {
 	    throw new IllegalArgumentException("Holiday List needs to be updated! " + holidayList.get(0).getYear());

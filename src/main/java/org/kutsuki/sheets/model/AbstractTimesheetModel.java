@@ -8,6 +8,7 @@ public abstract class AbstractTimesheetModel {
     private static final String BUSINESS_DEVELOPMENT = "Business Development";
     private static final String COVID_SICK_LEAVE = "COVID-19 Sick Leave";
     private static final String GENERAL_ADMIN = "General Admin";
+    private static final String ADMIN = "Admin";
     private static final String SECURITY = "Security";
     private static final String SENTINEL = "Sentinel";
     private static final String SICK_LEAVE = "Sick Leave";
@@ -24,6 +25,10 @@ public abstract class AbstractTimesheetModel {
 
     public void validate() {
 	this.valid = true;
+    }
+
+    public static String getAdmin() {
+	return ADMIN;
     }
 
     public String getBusinessDevelopment() {

@@ -16,7 +16,7 @@ public abstract class AbstractDocs extends AbstractGoogle {
     private static final String ID = "id";
     private static final String ID_PARENTS = "id, parents";
     private static final String PARENTS = "parents";
-    private static final String PARENT_ID = "1IRxkLu-flTPe3UZuYuKEnnWLllHS1zUG";
+    private static final String PARENT_ID = "1GW_hn2_IXH5aSHqMjeyS51M7rrmwtHQX";
 
     private Docs docs;
     private Drive drive;

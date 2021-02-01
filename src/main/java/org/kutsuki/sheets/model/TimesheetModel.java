@@ -60,6 +60,10 @@ public class TimesheetModel extends AbstractTimesheetModel {
 	    errorIfNotSentinel(customer, service);
 	    regularPay = regularPay.add(hours);
 	    validate();
+	} else if (StringUtils.equals(service, getAdmin())) {
+	    errorIfNotSentinel(customer, service);
+	    regularPay = regularPay.add(hours);
+	    validate();
 	} else if (StringUtils.equals(service, getCovidSickLeave())) {
 	    errorIfNotSentinel(customer, service);
 	    System.out.println(getFullName() + " - Covid-19 Sick Leave Found!");
