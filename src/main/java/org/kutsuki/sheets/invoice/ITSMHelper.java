@@ -60,10 +60,8 @@ public class ITSMHelper extends AbstractDocs {
 	createInvoice("TTO-14-2021", folderId);
 	createInvoice("TTO-16-2021", folderId);
 	createInvoice("TTO-20-2021", folderId);
-	createInvoice("TTO-21-2020", folderId);
 	createInvoice("TTO-21-2021", folderId);
 	createInvoice("TTO-24-2020", folderId);
-	createInvoice("TTO-26-2020", folderId);
 	createInvoice("TTO-26-2021", folderId);
     }
 
