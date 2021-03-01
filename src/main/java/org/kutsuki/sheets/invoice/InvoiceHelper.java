@@ -23,29 +23,19 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String STRING_VALUE = "\"userEnteredValue\":{\"stringValue\":\"";
     private static final String SUM = "=SUM(";
 
-    private static final String TTO_14_RANGE = "TTO 14 2020!E2:F2";
-    private static final String TTO_14_SERVICE = "ITSM Alliance EIT Ops TTO-014-2020";
-    private static final String TTO_14C_RANGE = "TTO 14C!E2:F2";
-    private static final String TTO_14C_SERVICE = "ITSM Alliance EIT Ops TTO-014C-2020 - COVID";
-    private static final String TTO_16_RANGE = "TTO 16 2020!E2:F3";
-    private static final String TTO_16_SERVICE = "ITSM Alliance EIT Ops TTO-016-2020";
-    private static final String TTO_16C_RANGE = "TTO 16C!E2:F3";
-    private static final String TTO_16C_SERVICE = "ITSM Alliance EIT Ops TTO-016C-2020 - COVID";
-    private static final String TTO_20_RANGE = "TTO 20 2020!E2:F2";
-    private static final String TTO_20_SERVICE = "ITSM Alliance EIT Ops TTO-020-2020";
-    private static final String TTO_21_2021_RANGE = "TTO 21 2021!E2:F3";
+    private static final String TTO_14_RANGE = "TTO 14 2021!E2:F6";
+    private static final String TTO_14_SERVICE = "ITSM Alliance EIT Ops TTO-014-2021";
+    private static final String TTO_16_RANGE = "TTO 16 2021!E2:F3";
+    private static final String TTO_16_SERVICE = "ITSM Alliance EIT Ops TTO-016-2021";
+    private static final String TTO_20_RANGE = "TTO 20 2021!E2:F2";
+    private static final String TTO_20_SERVICE = "ITSM Alliance EIT Ops TTO-020-2021";
+    private static final String TTO_21_2021_RANGE = "TTO 21 2021!E2:F2";
     private static final String TTO_21_2021_SERVICE = "ITSM Alliance EIT Ops TTO-021-2021";
-    private static final String TTO_21C_RANGE = "TTO 21C!E2:F3";
-    private static final String TTO_21C_SERVICE = "ITSM Alliance EIT Ops TTO-021C-2021 - COVID";
     private static final String TTO_24_RANGE = "TTO 24 2020!E2:F5";
     private static final String TTO_24_SERVICE = "ITSM Alliance EIT Ops TTO-024-2020";
-    private static final String TTO_24C_RANGE = "TTO 24C!E2:F5";
-    private static final String TTO_24C_SERVICE = "ITSM Alliance EIT Ops TTO-024C-2020 - COVID";
     private static final String TTO_26_2021_RANGE = "TTO 26 2021!E2:F2";
     private static final String TTO_26_2021_SERVICE = "ITSM Alliance EIT Ops TTO-026-2021";
-    private static final String TTO_26C_RANGE = "TTO 26C!E2:F2";
-    private static final String TTO_26C_SERVICE = "ITSM Alliance EIT Ops TTO-026C-2021 - COVID";
-    private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R11";
+    private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R10";
     private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
@@ -72,17 +62,12 @@ public class InvoiceHelper extends AbstractTimesheet {
     public void run() {
 	try {
 	    parseCsv();
-	    updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592);
-	    updateITSM(TTO_14C_RANGE, TTO_14C_SERVICE, 91890592);
+	    updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592, -404564145, 798342352, -1301936526, 284331424);
 	    updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982, 1910574595);
-	    updateITSM(TTO_16C_RANGE, TTO_16C_SERVICE, 812608982, 1910574595);
 	    updateITSM(TTO_20_RANGE, TTO_20_SERVICE, 1973893852);
 	    updateITSM(TTO_21_2021_RANGE, TTO_21_2021_SERVICE, 2023693587);
-	    updateITSM(TTO_21C_RANGE, TTO_21C_SERVICE, 2023693587, -1747439098);
 	    updateITSM(TTO_24_RANGE, TTO_24_SERVICE, -404564145, 798342352, -1301936526, 284331424);
-	    updateITSM(TTO_24C_RANGE, TTO_24C_SERVICE, -404564145, 798342352, -1301936526, 284331424);
 	    updateITSM(TTO_26_2021_RANGE, TTO_26_2021_SERVICE, 1973893852);
-	    updateITSM(TTO_26C_RANGE, TTO_26C_SERVICE, 1973893852);
 	    updateEveryoneElse();
 	    updateSpendingPlan();
 	    updateTimeOffDates();
