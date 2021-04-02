@@ -9,6 +9,7 @@ public abstract class AbstractTimesheetModel {
     private static final String COVID_SICK_LEAVE = "COVID-19 Sick Leave";
     private static final String GENERAL_ADMIN = "General Admin";
     private static final String ADMIN = "Admin";
+    private static final String PAGER = "Pager";
     private static final String SECURITY = "Security";
     private static final String SENTINEL = "Sentinel";
     private static final String SICK_LEAVE = "Sick Leave";
@@ -45,6 +46,10 @@ public abstract class AbstractTimesheetModel {
 
     public String getGeneralAdmin() {
 	return GENERAL_ADMIN;
+    }
+
+    public String getPager() {
+	return PAGER;
     }
 
     public static String getSecurity() {
