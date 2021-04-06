@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
@@ -16,12 +18,12 @@ import com.google.api.services.sheets.v4.model.RowData;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 public class InvoiceHelper extends AbstractTimesheet {
-    private static final String COVID = "COVID";
     private static final String INVOICE_ID = "1IER8vbOZpru8fjEkOMVRyObaMgIDM2yKMAUk6jJH9uI";
+    private static final String MONTH_ENDING_RANGE = "!B7";
+    private static final String NAME_RANGE = "!B10:C";
+    private static final String SPENDING_PLAN_ID = "1C5qfRsv1KrlhnuLIXUz2oCNFPDLUNdA2jXoBeetSuZ8";
     private static final String ITSM_ALLIANCE = "ITSM Alliance";
-    private static final String NUMBER_VALUE = "\"userEnteredValue\":{\"numberValue\":";
     private static final String STRING_VALUE = "\"userEnteredValue\":{\"stringValue\":\"";
-    private static final String SUM = "=SUM(";
 
     private static final String TTO_14_RANGE = "TTO 14 2021!E2:F6";
     private static final String TTO_14_SERVICE = "ITSM Alliance EIT Ops TTO-014-2021";
@@ -33,24 +35,39 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_21_2021_SERVICE = "ITSM Alliance EIT Ops TTO-021-2021";
     private static final String TTO_26_2021_RANGE = "TTO 26 2021!E2:F2";
     private static final String TTO_26_2021_SERVICE = "ITSM Alliance EIT Ops TTO-026-2021";
-    private static final String SPENDING_PLAN_RANGE = "Spending Plan!C2:R10";
     private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
     private LocalDate lastDate;
     private LocalDate validate;
+    private Map<Integer, String> monthColumnMap;
 
     /**
      * Constructor
      */
     public InvoiceHelper() {
 	LocalDate date = LocalDate.now();
+
 	if (date.getDayOfMonth() < 5) {
 	    date = date.minusMonths(1);
 	}
 
 	this.lastDate = date.withDayOfMonth(date.getMonth().length(date.isLeapYear()));
 	this.validate = lastDate.minusDays(4);
+
+	this.monthColumnMap = new HashMap<Integer, String>();
+	this.monthColumnMap.put(1, "E");
+	this.monthColumnMap.put(2, "G");
+	this.monthColumnMap.put(3, "I");
+	this.monthColumnMap.put(4, "K");
+	this.monthColumnMap.put(5, "M");
+	this.monthColumnMap.put(6, "O");
+	this.monthColumnMap.put(7, "Q");
+	this.monthColumnMap.put(8, "S");
+	this.monthColumnMap.put(9, "U");
+	this.monthColumnMap.put(10, "W");
+	this.monthColumnMap.put(11, "Y");
+	this.monthColumnMap.put(12, "AA");
     }
 
     /**
@@ -66,7 +83,6 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    updateITSM(TTO_21_2021_RANGE, TTO_21_2021_SERVICE, 2023693587);
 	    updateITSM(TTO_26_2021_RANGE, TTO_26_2021_SERVICE, 1973893852);
 	    updateEveryoneElse();
-	    updateSpendingPlan();
 	    updateTimeOffDates();
 	} catch (IOException e) {
 	    throw new IllegalArgumentException("Unable to parse CSV file.", e);
@@ -123,83 +139,58 @@ public class InvoiceHelper extends AbstractTimesheet {
 
 	ValueRange body = new ValueRange();
 	body.setValues(writeRowList);
-
 	writeSheet(INVOICE_ID, range, body);
+
+	updateSpendingPlan(StringUtils.substringAfterLast(service, StringUtils.SPACE), keys.length);
     }
 
-    private void updateSpendingPlan() {
-	List<RowData> rowData = readRowData(INVOICE_ID, SPENDING_PLAN_RANGE);
+    private void updateSpendingPlan(String sheet, int rows) {
+	// update Month Ending
 	List<List<Object>> writeRowList = new ArrayList<List<Object>>();
+	List<Object> dataList = new ArrayList<Object>();
+	dataList.add(lastDate.toString());
+	writeRowList.add(dataList);
 
-	for (int i = 0; i < rowData.size(); i++) {
-	    RowData rd = rowData.get(i);
-	    String name = StringUtils.substringBetween(rd.toString(), STRING_VALUE, Character.toString('"'));
-	    String[] values = StringUtils.substringsBetween(rd.toString(), NUMBER_VALUE, Character.toString('}'));
-	    String[] formulas = StringUtils.substringsBetween(rd.toString(), getFormulaOpen(), getFormulaClose());
-	    int month = (int) formulas[2].charAt(5) - 68;
+	ValueRange body = new ValueRange();
+	body.setValues(writeRowList);
+	writeSheet(SPENDING_PLAN_ID, sheet + MONTH_ENDING_RANGE, body);
 
-	    List<Object> dataList = new ArrayList<Object>();
-	    dataList.add(name);
+	// update Hours
+	writeRowList.clear();
+	List<List<Object>> rowData = readSheet(SPENDING_PLAN_ID, sheet + NAME_RANGE + (10 + rows - 1));
+	for (List<Object> data : rowData) {
+	    String name = data.get(1) + StringUtils.SPACE + data.get(0);
+	    InvoiceModel model = (InvoiceModel) getTimesheetMap().get(name.hashCode());
 
-	    for (int j = 0; j < values.length; j++) {
-		if (j == month) {
-		    InvoiceModel model = (InvoiceModel) getTimesheetMap().get(name.hashCode());
-
-		    if (model.isValid()) {
-			BigDecimal hours = BigDecimal.ZERO;
-			for (Entry<String, BigDecimal> entry : model.getHoursMap().entrySet()) {
-			    if (StringUtils.startsWith(entry.getKey(), ITSM_ALLIANCE)
-				    && !StringUtils.endsWith(entry.getKey(), COVID)) {
-				hours = hours.add(entry.getValue());
-			    }
-			}
-
-			dataList.add(hours.toString());
-		    } else {
-			dataList.add(StringUtils.EMPTY);
+	    dataList = new ArrayList<Object>();
+	    if (model.isValid()) {
+		BigDecimal hours = BigDecimal.ZERO;
+		for (Entry<String, BigDecimal> entry : model.getHoursMap().entrySet()) {
+		    if (StringUtils.endsWith(entry.getKey(), sheet)) {
+			hours = hours.add(entry.getValue());
 		    }
-		} else {
-		    dataList.add(values[j]);
 		}
-	    }
 
-	    dataList.add(updateActual(month, i));
-	    dataList.add(formulas[1]);
-	    dataList.add(updateProjected(month, i));
+		dataList.add(hours);
+	    } else {
+		dataList.add(StringUtils.EMPTY);
+	    }
 
 	    writeRowList.add(dataList);
 	}
 
-	ValueRange body = new ValueRange();
+	body = new ValueRange();
 	body.setValues(writeRowList);
 
-	writeSheet(INVOICE_ID, SPENDING_PLAN_RANGE, body);
-
-	System.out.println("Updated Spending Plan!");
-    }
-
-    private String updateActual(int month, int row) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUM);
-	sb.append('D');
-	sb.append(row + 2);
-	sb.append(':');
-	sb.append((char) (month + 68));
-	sb.append(row + 2);
-	sb.append(')');
-	return sb.toString();
-    }
-
-    private String updateProjected(int month, int row) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(SUM);
-	sb.append((char) (month + 69));
-	sb.append(row + 2);
-	sb.append(':');
-	sb.append('O');
-	sb.append(row + 2);
-	sb.append(')');
-	return sb.toString();
+	StringBuilder range = new StringBuilder();
+	range.append(sheet);
+	range.append('!');
+	range.append(monthColumnMap.get(lastDate.getMonthValue()));
+	range.append(10);
+	range.append(':');
+	range.append(monthColumnMap.get(lastDate.getMonthValue()));
+	range.append(10 + rows - 1);
+	writeSheet(SPENDING_PLAN_ID, range.toString(), body);
     }
 
     private void updateEveryoneElse() {
