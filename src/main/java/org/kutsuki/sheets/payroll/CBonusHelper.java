@@ -1,6 +1,7 @@
 package org.kutsuki.sheets.payroll;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.kutsuki.sheets.AbstractBonusSheets;
+import org.kutsuki.sheets.model.AbstractTimesheetModel;
 import org.kutsuki.sheets.model.EmployeeModel;
+import org.kutsuki.sheets.model.TimesheetModel;
 
 import com.google.api.services.sheets.v4.model.ValueRange;
 
@@ -32,9 +35,56 @@ public class CBonusHelper extends AbstractBonusSheets {
     public void run() {
 	parseMondaySheet(true);
 	parseEmployees();
+	addPager();
 	updateBonusSheets();
 	updateMondaySheet();
 	keyIn(0);
+    }
+
+    public void addPager() {
+	// if pager is removed, remove abstracttimesheet
+
+	try {
+	    parseCsv();
+
+	    for (AbstractTimesheetModel model : getTimesheetMap().values()) {
+		TimesheetModel timesheet = (TimesheetModel) model;
+
+		if (timesheet.getPagerDays() > 0) {
+		    String id = getNameIdMap().get(timesheet.getFullName().hashCode());
+		    List<List<Object>> rowList = readSheet(id, LocalDate.now().getYear() + getBonusRange());
+		    int nextBonusRow = rowList.size() + 1;
+
+		    StringBuilder pager = new StringBuilder();
+		    pager.append('=');
+		    pager.append(50);
+		    pager.append('*');
+		    pager.append(timesheet.getPagerDays());
+
+		    List<List<Object>> writeRowList = new ArrayList<List<Object>>();
+
+		    List<Object> bonusList = new ArrayList<Object>();
+		    bonusList.add(getPayDate());
+		    bonusList.add(BONUS);
+		    bonusList.add(pager.toString());
+		    bonusList.add(getChecksum(nextBonusRow));
+		    writeRowList.add(bonusList);
+
+		    ValueRange body = new ValueRange();
+		    body.setValues(writeRowList);
+
+		    StringBuilder range = new StringBuilder();
+		    range.append(LocalDate.now().getYear());
+		    range.append('!');
+		    range.append('A');
+		    range.append(nextBonusRow);
+
+		    writeSheet(id, range.toString(), body);
+		}
+	    }
+	} catch (IOException e) {
+	    throw new IllegalArgumentException("Unable to parse CSV file.", e);
+	}
     }
 
     /**

@@ -1,17 +1,21 @@
 package org.kutsuki.sheets;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.kutsuki.sheets.model.AbstractTimesheetModel;
+import org.kutsuki.sheets.model.TimesheetModel;
 
-public abstract class AbstractBonusSheets extends AbstractMondaySheets {
+public abstract class AbstractBonusSheets extends AbstractTimesheet {
     private static final String BBB = "BBB";
     private static final String BONUS_RANGE = "!A:D";
     private static final String CCC = "CCC";
     private static final String CHECKSUM = "=IF(OR(AND(BBB<>\"Bonus\",CCC<0),AND(OR(BBB=\"Bonus\",BBB=\"Carryover\",BBB=\"Sick Leave\"),CCC>0)),\"OK\",\"BAD\")";
 
     private Map<Integer, String> nameIdMap;
+    private LocalDate validate;
 
     /**
      * AbstractBonusSheets constructor
@@ -50,6 +54,25 @@ public abstract class AbstractBonusSheets extends AbstractMondaySheets {
 
 //	// TODO Remove special case MD
 //	this.nameIdMap.put(284331424, "1jZaYzvlM8C_UdxKUhvvXBlZ64eFpGukZhViXC1wVsIM");
+    }
+
+    @Override
+    public AbstractTimesheetModel newTimesheet(String fullName) {
+	return new TimesheetModel(fullName);
+    }
+
+    @Override
+    public LocalDate getLastDate() {
+	return getEndDate();
+    }
+
+    @Override
+    public LocalDate getValidationPeriod() {
+	if (validate == null) {
+	    validate = getEndDate().minusDays(4);
+	}
+
+	return validate;
     }
 
     public String getChecksum(int row) {

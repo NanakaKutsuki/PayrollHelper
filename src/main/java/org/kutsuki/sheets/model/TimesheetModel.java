@@ -10,6 +10,7 @@ public class TimesheetModel extends AbstractTimesheetModel {
     private BigDecimal regularPay;
     private BigDecimal businessDevelopment;
     private BigDecimal sickPay;
+    private int pager;
 
     /**
      * Constructor
@@ -21,6 +22,7 @@ public class TimesheetModel extends AbstractTimesheetModel {
 	this.regularPay = BigDecimal.ZERO;
 	this.businessDevelopment = BigDecimal.ZERO;
 	this.sickPay = BigDecimal.ZERO;
+	this.pager = 0;
     }
 
     /**
@@ -67,9 +69,10 @@ public class TimesheetModel extends AbstractTimesheetModel {
 	} else if (StringUtils.equals(service, getCovidSickLeave())) {
 	    errorIfNotSentinel(customer, service);
 	    System.out.println(getFullName() + " - Covid-19 Sick Leave Found!");
-	} else if (StringUtils.equals(service, getPager())) {
+	} else if (StringUtils.endsWith(service, getPager())) {
 	    errorIfSentinel(customer, service);
 	    System.out.println(getFullName() + " - Pager Found!");
+	    pager++;
 	} else {
 	    errorIfSentinel(customer, service);
 	    regularPay = regularPay.add(hours);
@@ -97,5 +100,9 @@ public class TimesheetModel extends AbstractTimesheetModel {
 
     public BigDecimal getSickPay() {
 	return sickPay;
+    }
+
+    public int getPagerDays() {
+	return pager;
     }
 }
