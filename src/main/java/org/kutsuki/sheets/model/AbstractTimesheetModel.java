@@ -28,7 +28,7 @@ public abstract class AbstractTimesheetModel {
 	this.valid = true;
     }
 
-    public static String getAdmin() {
+    public String getAdmin() {
 	return ADMIN;
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractTimesheetModel {
 	return PAGER;
     }
 
-    public static String getSecurity() {
+    public String getSecurity() {
 	return SECURITY;
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractTimesheetModel {
 	return SENTINEL;
     }
 
-    public static String getSickLeave() {
+    public String getSickLeave() {
 	return SICK_LEAVE;
     }
 

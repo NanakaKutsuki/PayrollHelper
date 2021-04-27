@@ -55,9 +55,6 @@ public abstract class AbstractSheets extends AbstractGoogle {
 	} catch (IOException | AWTException e) {
 	    throw new IllegalArgumentException(e);
 	}
-
-	// Interns
-	this.employeeMap.put(-2144727510, new EmployeeModel("J", "Diet", "10.00"));
     }
 
     /**

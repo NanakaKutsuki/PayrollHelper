@@ -51,6 +51,7 @@ public class CBonusHelper extends AbstractBonusSheets {
 		TimesheetModel timesheet = (TimesheetModel) model;
 
 		if (timesheet.getPagerDays() > 0) {
+
 		    String id = getNameIdMap().get(timesheet.getFullName().hashCode());
 		    List<List<Object>> rowList = readSheet(id, LocalDate.now().getYear() + getBonusRange());
 		    int nextBonusRow = rowList.size() + 1;
@@ -208,7 +209,7 @@ public class CBonusHelper extends AbstractBonusSheets {
 	CBonusHelper helper = new CBonusHelper();
 	helper.run();
 
-//	String name = "";
-//	System.out.println(name.hashCode());
+	// String name = "";
+	// System.out.println(name.hashCode());
     }
 }
