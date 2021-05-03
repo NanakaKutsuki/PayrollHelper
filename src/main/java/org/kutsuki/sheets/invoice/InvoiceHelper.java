@@ -206,7 +206,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    List<Object> dataList = new ArrayList<Object>();
 	    dataList.add(name);
 
-	    if (model.isValid()) {
+	    if (model != null && model.isValid()) {
 		BigDecimal hours = BigDecimal.ZERO;
 		for (Entry<String, BigDecimal> entry : model.getHoursMap().entrySet()) {
 		    if (!StringUtils.startsWith(entry.getKey(), ITSM_ALLIANCE)) {

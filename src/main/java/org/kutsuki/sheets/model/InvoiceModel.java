@@ -47,7 +47,7 @@ public class InvoiceModel extends AbstractTimesheetModel {
      */
     @Override
     public void addHours(String customer, String service, BigDecimal hours) {
-	if (!StringUtils.startsWith(customer, getSentinel())) {
+	if (!StringUtils.startsWith(customer, getSentinel()) && !StringUtils.endsWith(service, getPager())) {
 	    String key = createKey(customer, service);
 	    BigDecimal total = hoursMap.get(key);
 
@@ -59,7 +59,7 @@ public class InvoiceModel extends AbstractTimesheetModel {
 	} else if (!StringUtils.equals(service, getBusinessDevelopment())
 		&& !StringUtils.equals(service, getGeneralAdmin()) && !StringUtils.equals(service, getSickLeave())
 		&& !StringUtils.equals(service, getAdmin()) && !StringUtils.equals(service, getSecurity())
-		&& !StringUtils.equals(service, getCovidSickLeave())) {
+		&& !StringUtils.equals(service, getCovidSickLeave()) && !StringUtils.endsWith(service, getPager())) {
 	    errorIfSentinel(customer, service);
 	    sentinel = true;
 	}
