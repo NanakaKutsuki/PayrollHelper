@@ -84,8 +84,14 @@ public abstract class AbstractTimesheet extends AbstractMondaySheets {
 		    invoice.addHours(customer, service, hours);
 		}
 
-		// TODO Remove special case JD
+		// TODO Remove special case for AG
 		AbstractTimesheetModel model = newTimesheet(StringUtils.EMPTY);
+		model.addHours(model.getSentinel(), model.getAdmin(), BigDecimal.valueOf(80));
+		model.validate();
+		timesheetMap.put(-2009243245, model);
+
+		// TODO Remove special case JD
+		model = newTimesheet(StringUtils.EMPTY);
 		model.addHours(model.getSentinel(), model.getAdmin(), BigDecimal.valueOf(10));
 		model.validate();
 		timesheetMap.put(-1221551786, model);
