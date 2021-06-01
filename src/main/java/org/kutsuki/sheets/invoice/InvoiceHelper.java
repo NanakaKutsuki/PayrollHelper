@@ -31,8 +31,9 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_16_SERVICE = "ITSM Alliance EIT Ops TTO-016-2021";
     private static final String TTO_20_RANGE = "TTO 20 2021!E2:F2";
     private static final String TTO_20_SERVICE = "ITSM Alliance EIT Ops TTO-020-2021";
-    private static final String TTO_21_2021_RANGE = "TTO 21 2021!E2:F2";
+    private static final String TTO_21_2021_RANGE = "TTO 21 2021!E2:F3";
     private static final String TTO_21_2021_SERVICE = "ITSM Alliance EIT Ops TTO-021-2021";
+    private static final String TTO_21_2021_TELEWORK = "ITSM Alliance EIT Ops TTO-021-2021 Telework";
     private static final String TTO_26_2021_RANGE = "TTO 26 2021!E2:F2";
     private static final String TTO_26_2021_SERVICE = "ITSM Alliance EIT Ops TTO-026-2021";
     private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
@@ -137,6 +138,28 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    writeRowList.add(dataList);
 	}
 
+	// Special case for TTO-21
+	if (service.equals(TTO_21_2021_SERVICE)) {
+	    InvoiceModel model = (InvoiceModel) getTimesheetMap().get(keys[0]);
+
+	    String hours = StringUtils.EMPTY;
+	    StringBuilder sb = new StringBuilder();
+
+	    if (model.isValid()) {
+		hours = model.getHours(TTO_21_2021_TELEWORK);
+		sb.append(formulaList.get(1));
+		sb.append('+');
+		sb.append(hours);
+	    } else {
+		sb.append(formulaList.get(1));
+	    }
+
+	    List<Object> dataList = new ArrayList<Object>();
+	    dataList.add(hours);
+	    dataList.add(sb.toString());
+	    writeRowList.add(dataList);
+	}
+
 	ValueRange body = new ValueRange();
 	body.setValues(writeRowList);
 	writeSheet(INVOICE_ID, range, body);
@@ -166,7 +189,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    if (model.isValid()) {
 		BigDecimal hours = BigDecimal.ZERO;
 		for (Entry<String, BigDecimal> entry : model.getHoursMap().entrySet()) {
-		    if (StringUtils.endsWith(entry.getKey(), sheet)) {
+		    if (StringUtils.contains(entry.getKey(), sheet)) {
 			hours = hours.add(entry.getValue());
 		    }
 		}
