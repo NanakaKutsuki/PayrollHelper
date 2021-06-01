@@ -166,7 +166,7 @@ public class LeaderboardHelper extends AbstractSheets {
 
 	    Iterator<LocalDate> itr = holidayList.iterator();
 	    LocalDate date = itr.next();
-	    while (date.isBefore(endDate)) {
+	    while (date.isBefore(endDate) || date.isEqual(endDate)) {
 		holidays++;
 
 		if (itr.hasNext()) {
