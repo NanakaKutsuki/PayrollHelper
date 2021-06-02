@@ -52,6 +52,7 @@ public abstract class AbstractBonusSheets extends AbstractTimesheet {
 	this.nameIdMap.put(1910574595, "1a3uPMFJzB53rtO48KVEJ-dgBAQQFP46sCXtf6LRq5_4");
 	this.nameIdMap.put(-1821306982, "1taCKWmGaHLRK_My5cZPrdl6t_EpjRyNDP2BMCH4B33c");
 	this.nameIdMap.put(1140926759, "1Lb3S4_h5yFD1-RhWJ9ViJYsGT3qK-bzHze3SQdb4CwI");
+	this.nameIdMap.put(1534121308, "1GYpEAnzUn0ALnvOsfO2ubdheJj0l_Hldl37ovoH3Y6M");
 
 //	// TODO Remove special case MD
 //	this.nameIdMap.put(284331424, "1jZaYzvlM8C_UdxKUhvvXBlZ64eFpGukZhViXC1wVsIM");
