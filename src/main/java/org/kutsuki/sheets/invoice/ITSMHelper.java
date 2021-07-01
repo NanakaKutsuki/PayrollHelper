@@ -59,9 +59,7 @@ public class ITSMHelper extends AbstractDocs {
 	String folderId = createFolder(date.minusMonths(1).getMonthValue());
 	createInvoice("TTO-14-2021", folderId);
 	createInvoice("TTO-16-2021", folderId);
-	createInvoice("TTO-20-2021", folderId);
 	createInvoice("TTO-21-2021", folderId);
-	createInvoice("TTO-26-2021", folderId);
     }
 
     public void createInvoice(String title, String folderId) {

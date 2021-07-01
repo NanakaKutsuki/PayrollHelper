@@ -43,7 +43,7 @@ public abstract class AbstractDocs extends AbstractGoogle {
 	    fileMetadata.setMimeType(FOLDER);
 
 	    file = drive.files().create(fileMetadata).setFields(ID).execute();
-	    System.out.println(month + " created!");
+	    System.out.println("Month number: " + month + " created!");
 	} catch (IOException e) {
 	    throw new IllegalArgumentException(e);
 	}
