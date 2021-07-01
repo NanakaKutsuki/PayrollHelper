@@ -36,7 +36,7 @@ public class BPayrollHelper extends AbstractSheets {
 		keyPress(KeyEvent.VK_TAB);
 		keyIn(employee.getRegularPay());
 
-		if (employee.isPartner()) {
+		if (employee.isPartner() || isDoingBD(employee)) {
 		    keyPress(KeyEvent.VK_TAB);
 		    keyIn(employee.getBusinessDevelopment());
 
@@ -58,6 +58,10 @@ public class BPayrollHelper extends AbstractSheets {
 	}
 
 	System.out.println("Done keying in!");
+    }
+
+    private boolean isDoingBD(EmployeeModel employee) {
+	return employee.getFullName().hashCode() == 798342352 || employee.getFullName().hashCode() == 91890592;
     }
 
     /**

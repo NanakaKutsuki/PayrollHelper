@@ -29,13 +29,9 @@ public class InvoiceHelper extends AbstractTimesheet {
     private static final String TTO_14_SERVICE = "ITSM Alliance EIT Ops TTO-014-2021";
     private static final String TTO_16_RANGE = "TTO 16 2021!E2:F3";
     private static final String TTO_16_SERVICE = "ITSM Alliance EIT Ops TTO-016-2021";
-    private static final String TTO_20_RANGE = "TTO 20 2021!E2:F2";
-    private static final String TTO_20_SERVICE = "ITSM Alliance EIT Ops TTO-020-2021";
     private static final String TTO_21_2021_RANGE = "TTO 21 2021!E2:F3";
     private static final String TTO_21_2021_SERVICE = "ITSM Alliance EIT Ops TTO-021-2021";
     private static final String TTO_21_2021_TELEWORK = "ITSM Alliance EIT Ops TTO-021-2021 Telework";
-    private static final String TTO_26_2021_RANGE = "TTO 26 2021!E2:F2";
-    private static final String TTO_26_2021_SERVICE = "ITSM Alliance EIT Ops TTO-026-2021";
     private static final String EVERYBODY_ELSE_RANGE = "Everybody Else!A2:C";
     private static final String TIME_OFF_RANGE = "Time Off!I2:J2";
 
@@ -80,9 +76,7 @@ public class InvoiceHelper extends AbstractTimesheet {
 	    parseCsv();
 	    updateITSM(TTO_14_RANGE, TTO_14_SERVICE, 91890592, -404564145, 798342352, -1301936526, 284331424);
 	    updateITSM(TTO_16_RANGE, TTO_16_SERVICE, 812608982, 1910574595);
-	    updateITSM(TTO_20_RANGE, TTO_20_SERVICE, 1973893852);
 	    updateITSM(TTO_21_2021_RANGE, TTO_21_2021_SERVICE, 2023693587);
-	    updateITSM(TTO_26_2021_RANGE, TTO_26_2021_SERVICE, 1973893852);
 	    updateEveryoneElse();
 	    updateTimeOffDates();
 	} catch (IOException e) {

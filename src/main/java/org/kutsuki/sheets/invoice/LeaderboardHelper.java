@@ -61,6 +61,7 @@ public class LeaderboardHelper extends AbstractSheets {
 	this.holidayList.add(LocalDate.of(2021, 1, 18));
 	this.holidayList.add(LocalDate.of(2021, 2, 15));
 	this.holidayList.add(LocalDate.of(2021, 5, 31));
+	this.holidayList.add(LocalDate.of(2021, 6, 18));
 	this.holidayList.add(LocalDate.of(2021, 7, 5));
 	this.holidayList.add(LocalDate.of(2021, 9, 6));
 	this.holidayList.add(LocalDate.of(2021, 10, 11));
